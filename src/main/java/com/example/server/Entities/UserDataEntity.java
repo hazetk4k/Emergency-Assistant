@@ -32,6 +32,10 @@ public class UserDataEntity {
     @OneToMany(mappedBy = "userDataByUserEmail")
     private Collection<ReportsEntity> reportsByEmail;
 
+    public UserDataEntity() {
+
+    }
+
     public String getName() {
         return name;
     }
@@ -85,6 +89,16 @@ public class UserDataEntity {
     }
 
     public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public UserDataEntity(String name, String surname, String patronymic, String homeAddress, String workAddress, String email, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.homeAddress = homeAddress;
+        this.workAddress = workAddress;
+        this.email = email;
         this.password = password;
     }
 

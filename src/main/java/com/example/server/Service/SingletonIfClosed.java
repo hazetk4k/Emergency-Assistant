@@ -5,6 +5,7 @@ import com.example.server.DBTransactions.DBManager;
 public class SingletonIfClosed {
     static SingletonIfClosed instance;
     public static DBManager manager;
+
     Boolean ifClosed = true;
     public static SingletonIfClosed getInstance(){
         if (instance == null){

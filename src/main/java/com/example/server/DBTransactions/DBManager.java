@@ -6,50 +6,60 @@ import jakarta.persistence.*;
 import java.util.List;
 
 public class DBManager {
-    EntityTransaction transaction;
-    EntityManagerFactory managerFactory;
-    EntityManager entityManager;
+    EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("default");
+
 
     public List<TypeEmEntity> getAllTypesEntities() {
         List<TypeEmEntity> list;
+        EntityManager entityManager = managerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            managerFactory = Persistence.createEntityManagerFactory("default");
-            entityManager = managerFactory.createEntityManager();
-            transaction = entityManager.getTransaction();
             transaction.begin();
             TypedQuery<TypeEmEntity> q = entityManager.createQuery("SELECT e from TypeEmEntity e", TypeEmEntity.class);
             list = q.getResultList();
+            transaction.commit();
         } catch (Exception e) {
             throw new RuntimeException(e);
+        } finally {
+            entityManager.close();
         }
-        transaction.commit();
-        entityManager.clear();
         return list;
     }
 
-    public boolean addReportToDatabase(ReportsEntity report) {
+    public void addReportToDatabase(ReportsEntity report) {
+        EntityManager entityManager = managerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
         try {
-            transaction = entityManager.getTransaction();
             transaction.begin();
-
             entityManager.persist(report);
-
+            System.out.println("Добавлено");
             transaction.commit();
-            entityManager.clear();
-            return true;
         } catch (Exception e) {
             if (transaction != null && transaction.isActive()) {
                 transaction.rollback();
             }
-            return false;
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.close(); // Закрываем EntityManager после использования
         }
     }
 
-    //entityManager.persist добавить
-
-    //entityManger.merge обновить
-
-    //entityManger.remove удалить
-
+    public void addUserToDatabase(UserDataEntity user) {
+        EntityManager entityManager = managerFactory.createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        try {
+            transaction.begin();
+            entityManager.persist(user);
+            System.out.println("Добавлено.");
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.close(); // Закрываем EntityManager после использования
+        }
+    }
 
 }

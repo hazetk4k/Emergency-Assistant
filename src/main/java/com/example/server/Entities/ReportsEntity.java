@@ -25,22 +25,23 @@ public class ReportsEntity {
     private Timestamp timestamp;
     @Basic
     @Column(name = "areThereAnyCasualties")
-    private Byte areThereAnyCasualties;
+    private Boolean areThereAnyCasualties;
     @Basic
     @Column(name = "casualtiesAmount")
-    private Integer casualtiesAmount;
+    private String casualtiesAmount;
     @Basic
     @Column(name = "isUserInDanger")
-    private Byte isUserInDanger;
+    private Boolean isUserInDanger;
     @Basic
     @Column(name = "wasSeen")
-    private Byte wasSeen;
+    private Boolean wasSeen;
     @Basic
     @Column(name = "user_email")
     private String userEmail;
     @ManyToOne
     @JoinColumn(name = "user_email", referencedColumnName = "email", insertable = false, updatable = false)
     private UserDataEntity userDataByUserEmail;
+
 
     public int getIdReport() {
         return idReport;
@@ -82,35 +83,35 @@ public class ReportsEntity {
         this.timestamp = timestamp;
     }
 
-    public Byte getAreThereAnyCasualties() {
+    public Boolean getAreThereAnyCasualties() {
         return areThereAnyCasualties;
     }
 
-    public void setAreThereAnyCasualties(Byte areThereAnyCasualties) {
+    public void setAreThereAnyCasualties(Boolean areThereAnyCasualties) {
         this.areThereAnyCasualties = areThereAnyCasualties;
     }
 
-    public Integer getCasualtiesAmount() {
+    public String getCasualtiesAmount() {
         return casualtiesAmount;
     }
 
-    public void setCasualtiesAmount(Integer casualtiesAmount) {
+    public void setCasualtiesAmount(String casualtiesAmount) {
         this.casualtiesAmount = casualtiesAmount;
     }
 
-    public Byte getIsUserInDanger() {
+    public Boolean getIsUserInDanger() {
         return isUserInDanger;
     }
 
-    public void setIsUserInDanger(Byte isUserInDanger) {
+    public void setIsUserInDanger(Boolean isUserInDanger) {
         this.isUserInDanger = isUserInDanger;
     }
 
-    public Byte getWasSeen() {
+    public Boolean getWasSeen() {
         return wasSeen;
     }
 
-    public void setWasSeen(Byte wasSeen) {
+    public void setWasSeen(Boolean wasSeen) {
         this.wasSeen = wasSeen;
     }
 

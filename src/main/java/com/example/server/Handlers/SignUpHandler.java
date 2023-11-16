@@ -1,42 +1,35 @@
 package com.example.server.Handlers;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
+import com.example.server.DBTransactions.DBManager;
+import com.example.server.DBTransactions.UserObRep;
+import com.example.server.DBTransactions.UserRep;
+import com.example.server.Entities.UserDataEntity;
+import com.example.server.Handlers.Base.PostHandler;
+import com.example.server.Service.SingletonIfClosed;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
 
-public class SignUpHandler implements HttpHandler {
+public class SignUpHandler extends PostHandler {
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public int handlePostInput(String output) {
         try {
+            DBManager dbManager = SingletonIfClosed.getInstance().getDBManager();
+            UserObRep userOb = gson.fromJson(output, UserObRep.class);
+            UserRep profile = userOb.profile;
 
-            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder requestBody = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                requestBody.append(line);
-            }
-            br.close();
-            isr.close();
+            UserDataEntity userDataEntity = new UserDataEntity(profile.name,
+                    profile.surname, profile.patronymic, profile.homeAddress,
+                    profile.workAddress, profile.email, userOb.password);
 
-            JsonObject json = JsonParser.parseString(requestBody.toString()).getAsJsonObject();
-            System.out.println("Received sign up request:\n" + json.toString());
-
-            exchange.sendResponseHeaders(200, -1);
-
+            dbManager.addUserToDatabase(userDataEntity);
+            System.out.println("Все прошло");
+            return 200;
         } catch (Exception e) {
-            exchange.sendResponseHeaders(500, 0);
-            String errorMessage = "Internal Server Error: " + e.getMessage();
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(errorMessage.getBytes());
-            }
+            System.out.println(e.getMessage());
+            return 500;
         }
     }
 }

@@ -1,26 +1,48 @@
 package com.example.server.Handlers;
 
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
+import com.example.server.DBTransactions.DBManager;
+import com.example.server.DBTransactions.ReportObRep;
+import com.example.server.DBTransactions.ReportRep;
+import com.example.server.Entities.ReportsEntity;
+import com.example.server.Handlers.Base.PostHandler;
+import com.example.server.Service.SingletonIfClosed;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.sql.Timestamp;
 
-public class ReportHandler implements HttpHandler {
+public class ReportHandler extends PostHandler {
+
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    protected int handlePostInput(String output) {
         try {
+            DBManager dbManager = SingletonIfClosed.getInstance().getDBManager();
 
-            //dbManager.addReportToDatabase(newReport);
-            exchange.sendResponseHeaders(200, 0);
-        }catch (Exception e){
-            exchange.sendResponseHeaders(500, 0);
-            String errorMessage = "Internal Server Error: " + e.getMessage();
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(errorMessage.getBytes());
-            }
+            ReportObRep reportObRep = gson.fromJson(output, ReportObRep.class);
+            System.out.println(reportObRep.toString());
+
+            ReportRep rep1 = reportObRep.report;
+            ReportsEntity report = new ReportsEntity();
+
+            report.setAdditionalInfo(rep1.additionalInfo);
+            report.setType(rep1.type);
+            report.setPlace(rep1.place);
+            report.setTimestamp(new Timestamp(rep1.timestamp));
+            report.setAdditionalInfo(rep1.additionalInfo);
+            report.setCasualtiesAmount(rep1.casualtiesAmount);
+            report.setIsUserInDanger(rep1.isUserInDanger);
+            report.setAreThereAnyCasualties(rep1.areThereAnyCasualties);
+            report.setUserEmail(reportObRep.email);
+            report.setWasSeen(false);
+
+            dbManager.addReportToDatabase(report);
+            System.out.println("Все прошло");
+            return 200;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 500;
         }
     }
 }
