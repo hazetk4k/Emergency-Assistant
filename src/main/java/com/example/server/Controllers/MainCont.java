@@ -15,7 +15,7 @@ public class MainCont implements Initializable {
 
 
     public void OnButton() throws IOException {
-        cont.openFxmlScene("/new.fxml");
+        cont.openFxmlScene("/new_report_menu.fxml");
         SingletonIfClosed.getInstance().setIfClosed(true);
         Stage stage = (Stage) Button.getScene().getWindow();
         stage.close();

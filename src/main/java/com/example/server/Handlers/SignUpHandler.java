@@ -15,6 +15,7 @@ public class SignUpHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
         try {
+
             InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
             BufferedReader br = new BufferedReader(isr);
             StringBuilder requestBody = new StringBuilder();
@@ -26,7 +27,7 @@ public class SignUpHandler implements HttpHandler {
             JsonObject json = JsonParser.parseString(requestBody.toString()).getAsJsonObject();
             System.out.println("Received sign up request:\n" + json.toString());
 
-            exchange.sendResponseHeaders(200, 0);
+            exchange.sendResponseHeaders(200, -1);
         } catch (Exception e) {
             exchange.sendResponseHeaders(500, 0);
             String errorMessage = "Internal Server Error: " + e.getMessage();
