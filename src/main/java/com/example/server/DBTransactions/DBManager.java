@@ -27,11 +27,29 @@ public class DBManager {
         return list;
     }
 
-    //entityManager.persist
+    public boolean addReportToDatabase(ReportsEntity report) {
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
 
-    //entityManger.merge
+            entityManager.persist(report);
 
-    //entityManger.remove
+            transaction.commit();
+            entityManager.clear();
+            return true;
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            return false;
+        }
+    }
+
+    //entityManager.persist добавить
+
+    //entityManger.merge обновить
+
+    //entityManger.remove удалить
 
 
 }

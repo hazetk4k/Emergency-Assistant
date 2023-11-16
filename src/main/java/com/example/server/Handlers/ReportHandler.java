@@ -13,6 +13,7 @@ public class ReportHandler implements HttpHandler {
     public void handle(HttpExchange exchange) throws IOException {
         try {
 
+            //dbManager.addReportToDatabase(newReport);
             exchange.sendResponseHeaders(200, 0);
         }catch (Exception e){
             exchange.sendResponseHeaders(500, 0);

@@ -27,6 +27,7 @@ public class EmergencyTypesHandler implements HttpHandler {
             String string = gson.toJson(types);
             byte[] bytes = string.getBytes();
             System.out.println("types");
+
             exchange.sendResponseHeaders(200, bytes.length);
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(bytes);

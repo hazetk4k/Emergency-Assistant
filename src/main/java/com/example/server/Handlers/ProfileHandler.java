@@ -20,10 +20,12 @@ public class ProfileHandler implements HttpHandler {
             BufferedReader br = new BufferedReader(isr);
             StringBuilder requestBody = new StringBuilder();
             String line;
-
             while ((line = br.readLine()) != null) {
                 requestBody.append(line);
             }
+            br.close();
+            isr.close();
+
             System.out.println(requestBody);
 
 //            JsonObject json = JsonParser.parseString(requestBody.toString()).getAsJsonObject();

@@ -23,11 +23,14 @@ public class SignUpHandler implements HttpHandler {
             while ((line = br.readLine()) != null) {
                 requestBody.append(line);
             }
+            br.close();
+            isr.close();
 
             JsonObject json = JsonParser.parseString(requestBody.toString()).getAsJsonObject();
             System.out.println("Received sign up request:\n" + json.toString());
 
             exchange.sendResponseHeaders(200, -1);
+
         } catch (Exception e) {
             exchange.sendResponseHeaders(500, 0);
             String errorMessage = "Internal Server Error: " + e.getMessage();
