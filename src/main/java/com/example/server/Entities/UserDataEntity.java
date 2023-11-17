@@ -2,11 +2,13 @@ package com.example.server.Entities;
 
 import jakarta.persistence.*;
 
-import java.util.Collection;
-
 @Entity
 @Table(name = "user_data", schema = "emergency", catalog = "")
 public class UserDataEntity {
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @Column(name = "user_id")
+    private int userId;
     @Basic
     @Column(name = "name")
     private String name;
@@ -22,18 +24,26 @@ public class UserDataEntity {
     @Basic
     @Column(name = "work_address")
     private String workAddress;
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
+    @Basic
     @Column(name = "email")
     private String email;
     @Basic
     @Column(name = "password")
     private String password;
-    @OneToMany(mappedBy = "userDataByUserEmail")
-    private Collection<ReportsEntity> reportsByEmail;
+    @ManyToOne
+    @JoinColumn(name = "email", referencedColumnName = "user_email", nullable = false, insertable = false, updatable = false)
+    private ReportsEntity reportsByEmail;
 
     public UserDataEntity() {
 
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -109,6 +119,7 @@ public class UserDataEntity {
 
         UserDataEntity that = (UserDataEntity) o;
 
+        if (userId != that.userId) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (surname != null ? !surname.equals(that.surname) : that.surname != null) return false;
         if (patronymic != null ? !patronymic.equals(that.patronymic) : that.patronymic != null) return false;
@@ -122,7 +133,8 @@ public class UserDataEntity {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
+        int result = userId;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + (patronymic != null ? patronymic.hashCode() : 0);
         result = 31 * result + (homeAddress != null ? homeAddress.hashCode() : 0);
@@ -132,11 +144,11 @@ public class UserDataEntity {
         return result;
     }
 
-    public Collection<ReportsEntity> getReportsByEmail() {
+    public ReportsEntity getReportsByEmail() {
         return reportsByEmail;
     }
 
-    public void setReportsByEmail(Collection<ReportsEntity> reportsByEmail) {
+    public void setReportsByEmail(ReportsEntity reportsByEmail) {
         this.reportsByEmail = reportsByEmail;
     }
 }

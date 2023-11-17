@@ -1,41 +1,70 @@
 package com.example.server.Controllers;
 
+import com.example.server.Service.SingletonIfClosed;
 import javafx.animation.TranslateTransition;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
-public class NewReportCont {
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    public Button button1;
-    public Button button2;
-    public Button button3;
+public class NewReportCont implements Initializable {
+    BaseCont cont = new BaseCont();
+    public javafx.scene.control.Button button1;
+    public javafx.scene.control.Button button2;
+    public javafx.scene.control.Button button3;
     public Button toggleMenuButton;
     @FXML
     private VBox burgerMenu;
 
-    private boolean menuVisible = false;
-
-    @FXML
-    private void initialize() {
-    }
     @FXML
     private void toggleMenu() {
         TranslateTransition menuAnimation = new TranslateTransition(Duration.millis(300), burgerMenu);
 
-        if (!menuVisible) {
-            menuAnimation.setToX(0);
-            menuVisible = true;
+        if (!burgerMenu.isVisible()) {
+            menuAnimation.setToY(0);
             burgerMenu.setVisible(true);
             toggleMenuButton.setText("✖");
+            menuAnimation.play();
         } else {
-            menuAnimation.setToX(-burgerMenu.getWidth());
-            menuVisible = false;
+            menuAnimation.setToY(-burgerMenu.getWidth());
             burgerMenu.setVisible(false);
             toggleMenuButton.setText("☰");
+            menuAnimation.play();
         }
-        menuAnimation.play();
+    }
+
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        button1.setStyle("-fx-font-size: 14px;");
+        button2.setStyle("-fx-font-size: 14px;");
+        button3.setStyle("-fx-font-size: 14px;");
+
+    }
+
+    public void toReportsList() throws IOException {
+        cont.openFxmlScene("/new.fxml");
+        SingletonIfClosed.getInstance().setIfClosed(true);
+        Stage stage = (Stage) button1.getScene().getWindow();
+        stage.close();
+    }
+
+    public void openSaveDirectory(ActionEvent actionEvent) {
+    }
+
+
+    public void toAuthWindow() throws IOException {
+        cont.openFxmlScene("/auth.fxml");
+        SingletonIfClosed.getInstance().setIfClosed(true);
+        Stage stage = (Stage) button3.getScene().getWindow();
+        stage.close();
     }
 }

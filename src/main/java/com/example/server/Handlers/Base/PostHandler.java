@@ -20,6 +20,7 @@ public abstract class PostHandler extends BaseHandler {
             }
             int code = handlePostInput(sb.toString());
             output.sendResponseHeaders(code, -1);
+            System.out.println(code);
             br.close();
             isr.close();
         } catch (Exception e) {

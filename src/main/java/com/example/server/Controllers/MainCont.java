@@ -2,7 +2,6 @@ package com.example.server.Controllers;
 
 import com.example.server.Service.SingletonIfClosed;
 import javafx.fxml.*;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;

@@ -1,37 +1,41 @@
 package com.example.server.Handlers;
 
-import com.sun.net.httpserver.HttpHandler;
-import com.sun.net.httpserver.HttpExchange;
+import com.example.server.DBTransactions.AuthRep;
+import com.example.server.DBTransactions.DBManager;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
+import com.example.server.Entities.UserDataEntity;
+import com.example.server.Handlers.Base.PostHandler;
+import com.example.server.Service.SingletonIfClosed;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
-public class SignInHandler implements HttpHandler{
+import java.util.Objects;
+
+
+public class SignInHandler extends PostHandler {
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public int handlePostInput(String output) {
         try {
-            InputStreamReader isr = new InputStreamReader(exchange.getRequestBody(), StandardCharsets.UTF_8);
-            BufferedReader br = new BufferedReader(isr);
-            StringBuilder requestBody = new StringBuilder();
-            String line;
-            while ((line = br.readLine()) != null) {
-                requestBody.append(line);
+            DBManager dbManager = SingletonIfClosed.getInstance().getDBManager();
+            AuthRep authRep = gson.fromJson(output, AuthRep.class);
+            UserDataEntity userDataEntity = dbManager.getUserByEmailAndPassword(authRep.email);
+            if (userDataEntity != null) {
+                if (Objects.equals(userDataEntity.getPassword(), authRep.password)) {
+                    System.out.println("Все прошло");
+                    return 200;
+                } else {
+                    System.out.println("Не верный пароль");
+                    return 401;
+                }
+            } else {
+                System.out.println("Пользователь не найден");
+                return 404;
             }
-            br.close();
-            isr.close();
-
-
-
-            exchange.sendResponseHeaders(200, 0);
-        }catch (Exception e){
-            exchange.sendResponseHeaders(500, 0);
-            String errorMessage = "Internal Server Error: " + e.getMessage();
-            try (OutputStream os = exchange.getResponseBody()) {
-                os.write(errorMessage.getBytes());
-            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 500;
         }
     }
 }
