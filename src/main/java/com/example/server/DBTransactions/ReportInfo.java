@@ -6,9 +6,7 @@ public class ReportInfo {
     private String type;
     private Timestamp timestamp;
     private String place;
-    private String name;
-    private String surname;
-    private String patronymic;
+    private String fio;
     private Boolean wasSeen;
 
     public String getType() {
@@ -35,45 +33,27 @@ public class ReportInfo {
         this.place = place;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
     public Boolean getWasSeen() {
         return wasSeen;
+    }
+
+    public String getFio() {
+        return fio;
+    }
+
+    public void setFio(String fio) {
+        this.fio = fio;
     }
 
     public void setWasSeen(Boolean wasSeen) {
         this.wasSeen = wasSeen;
     }
 
-    public ReportInfo(String type, Timestamp timestamp, String place, String name, String surname, String patronymic, Boolean wasSeen) {
+    public ReportInfo(String type, Timestamp timestamp, String place, String fio, Boolean wasSeen) {
         this.type = type;
         this.timestamp = timestamp;
         this.place = place;
-        this.name = name;
-        this.surname = surname;
-        this.patronymic = patronymic;
+        this.fio = fio;
         this.wasSeen = wasSeen;
     }
 }

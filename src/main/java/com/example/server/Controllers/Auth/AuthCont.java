@@ -1,5 +1,6 @@
-package com.example.server.Controllers;
+package com.example.server.Controllers.Auth;
 
+import com.example.server.Controllers.BaseCont;
 import com.example.server.Service.SingletonIfClosed;
 import javafx.fxml.*;
 import javafx.stage.Stage;
@@ -8,7 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class MainCont implements Initializable {
+public class AuthCont implements Initializable {
     public javafx.scene.control.Button Button;
     BaseCont cont = new BaseCont();
 

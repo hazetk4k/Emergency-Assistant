@@ -2,6 +2,8 @@ package com.example.server.DBTransactions;
 
 import com.example.server.Entities.*;
 import jakarta.persistence.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -66,24 +68,27 @@ public class DBManager {
         }
     }
 
-    public List<ReportInfo> getUserReportsInfo() {
-        List<ReportInfo> reportsInfoList = new ArrayList<>();
+    public ObservableList<ReportInfo> getUserReportsInfo() {
+        ObservableList<ReportInfo> reportsInfoList = FXCollections.observableArrayList();
         try {
             String queryStr = "SELECT u FROM UserDataEntity u";
+
             TypedQuery<UserDataEntity> query = entityManager.createQuery(queryStr, UserDataEntity.class);
             List<UserDataEntity> users = query.getResultList();
 
             for (UserDataEntity user : users) {
+                String fullName = user.getSurname() + " " + user.getName().charAt(0) + ". " + user.getPatronymic().charAt(0) + ".";
                 for (ReportsEntity report : user.getReportsByEmail()) {
                     String type = report.getType();
                     Timestamp timestamp = report.getTimestamp();
                     String place = report.getPlace();
                     Boolean wasSeen = report.getWasSeen();
 
-                    ReportInfo reportInfo = new ReportInfo(type, timestamp, place, user.getName(), user.getSurname(), user.getPatronymic(), wasSeen);
+                    ReportInfo reportInfo = new ReportInfo(type, timestamp, place, fullName, wasSeen);
                     reportsInfoList.add(reportInfo);
                 }
             }
+
         } finally {
             entityManager.close();
         }

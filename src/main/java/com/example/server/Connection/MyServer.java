@@ -15,7 +15,7 @@ public class MyServer extends Application {
     public void start(Stage stage) throws IOException {
 
 
-        FXMLLoader fxmlLoader = new FXMLLoader(MyServer.class.getResource("/main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MyServer.class.getResource("/new_report_menu.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
