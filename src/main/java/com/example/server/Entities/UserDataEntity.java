@@ -32,7 +32,7 @@ public class UserDataEntity {
     @Basic
     @Column(name = "password")
     private String password;
-    @OneToMany(mappedBy = "userDataByUserEmail")
+    @OneToMany(mappedBy = "userByEmail")
     private Collection<ReportsEntity> reportsByEmail;
 
     public UserDataEntity() {
@@ -103,16 +103,6 @@ public class UserDataEntity {
         this.password = password;
     }
 
-    public UserDataEntity(String name, String surname, String patronymic, String homeAddress, String workAddress, String email, String password) {
-        this.name = name;
-        this.surname = surname;
-        this.patronymic = patronymic;
-        this.homeAddress = homeAddress;
-        this.workAddress = workAddress;
-        this.email = email;
-        this.password = password;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -151,5 +141,15 @@ public class UserDataEntity {
 
     public void setReportsByEmail(Collection<ReportsEntity> reportsByEmail) {
         this.reportsByEmail = reportsByEmail;
+    }
+
+    public UserDataEntity(String name, String surname, String patronymic, String homeAddress, String workAddress, String email, String password) {
+        this.name = name;
+        this.surname = surname;
+        this.patronymic = patronymic;
+        this.homeAddress = homeAddress;
+        this.workAddress = workAddress;
+        this.email = email;
+        this.password = password;
     }
 }

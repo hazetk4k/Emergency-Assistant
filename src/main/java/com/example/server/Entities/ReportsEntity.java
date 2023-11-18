@@ -39,8 +39,8 @@ public class ReportsEntity {
     @Column(name = "user_email")
     private String userEmail;
     @ManyToOne
-    @JoinColumn(name = "user_email", referencedColumnName = "email", nullable = false, insertable = false, updatable = false)
-    private UserDataEntity userDataByUserEmail;
+    @JoinColumn(name = "user_email", referencedColumnName = "email", insertable = false, updatable = false)
+    private UserDataEntity userByEmail;
 
     public int getIdReport() {
         return idReport;
@@ -162,11 +162,11 @@ public class ReportsEntity {
         return result;
     }
 
-    public UserDataEntity getUserDataByUserEmail() {
-        return userDataByUserEmail;
+    public UserDataEntity getUserByEmail() {
+        return userByEmail;
     }
 
-    public void setUserDataByUserEmail(UserDataEntity userDataByUserEmail) {
-        this.userDataByUserEmail = userDataByUserEmail;
+    public void setUserByEmail(UserDataEntity userByEmail) {
+        this.userByEmail = userByEmail;
     }
 }

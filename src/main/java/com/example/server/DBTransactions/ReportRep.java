@@ -1,7 +1,5 @@
 package com.example.server.DBTransactions;
 
-import java.sql.Timestamp;
-
 public class ReportRep {
     public String type;
     public String additionalInfo;

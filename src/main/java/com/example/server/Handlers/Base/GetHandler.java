@@ -1,6 +1,5 @@
 package com.example.server.Handlers.Base;
 
-import com.example.server.Handlers.Base.BaseHandler;
 import com.sun.net.httpserver.HttpExchange;
 
 import java.io.OutputStream;

@@ -14,7 +14,6 @@ public class ServerListener extends Thread{
         try {
             server = HttpServer.create(new InetSocketAddress(8080), 0);
 
-            // Регистрация обработчиков для разных контекстов
             server.createContext("/auth/signup", new SignUpHandler());
             server.createContext("/auth/signin", new SignInHandler());
             server.createContext("/profile", new ProfileHandler());
@@ -25,7 +24,6 @@ public class ServerListener extends Thread{
             server.start();
             System.out.println("Server is listening on port 8080");
 
-            // Ожидание ввода пользователя для завершения работы сервера
             System.out.println("Press 'q' and Enter to stop the server.");
             Scanner scanner = new Scanner(System.in);
             while (!scanner.nextLine().equalsIgnoreCase("q")) {
@@ -33,7 +31,7 @@ public class ServerListener extends Thread{
             }
 
         } catch (IOException e) {
-            e.printStackTrace(); // Обработка ошибок исключений
+            e.printStackTrace();
         } finally {
             if (server != null) {
                 server.stop(0);
