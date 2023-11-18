@@ -2,6 +2,8 @@ package com.example.server.Entities;
 
 import jakarta.persistence.*;
 
+import java.util.Collection;
+
 @Entity
 @Table(name = "user_data", schema = "emergency", catalog = "")
 public class UserDataEntity {
@@ -30,9 +32,8 @@ public class UserDataEntity {
     @Basic
     @Column(name = "password")
     private String password;
-    @ManyToOne
-    @JoinColumn(name = "email", referencedColumnName = "user_email", nullable = false, insertable = false, updatable = false)
-    private ReportsEntity reportsByEmail;
+    @OneToMany(mappedBy = "userDataByUserEmail")
+    private Collection<ReportsEntity> reportsByEmail;
 
     public UserDataEntity() {
 
@@ -144,11 +145,11 @@ public class UserDataEntity {
         return result;
     }
 
-    public ReportsEntity getReportsByEmail() {
+    public Collection<ReportsEntity> getReportsByEmail() {
         return reportsByEmail;
     }
 
-    public void setReportsByEmail(ReportsEntity reportsByEmail) {
+    public void setReportsByEmail(Collection<ReportsEntity> reportsByEmail) {
         this.reportsByEmail = reportsByEmail;
     }
 }

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
+<AnchorPane stylesheets="/css/ReportsStylesheet.css" xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0"
             fx:controller="com.example.server.Controllers.NewReportCont">
 
     <Button fx:id="toggleMenuButton" text="☰" prefWidth="230.0" onAction="#toggleMenu"/>

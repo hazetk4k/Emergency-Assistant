@@ -11,14 +11,14 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
-public class BaseCont{
+public class BaseCont {
 
     public void openFxmlScene(String name) throws IOException {
         Stage stage = new Stage();
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                if(SingletonIfClosed.getInstance().getIfClosed()){
+                if (SingletonIfClosed.getInstance().getIfClosed()) {
                     System.out.println("Сервер выключен");
                     System.exit(0);
                 }
@@ -30,7 +30,6 @@ public class BaseCont{
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();
-
     }
 
 }

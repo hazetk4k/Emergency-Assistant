@@ -19,14 +19,17 @@ public class SignUpHandler extends PostHandler {
             DBManager dbManager = SingletonIfClosed.getInstance().getDBManager();
             UserObRep userOb = gson.fromJson(output, UserObRep.class);
             UserRep profile = userOb.profile;
-
-            UserDataEntity userDataEntity = new UserDataEntity(profile.name,
-                    profile.surname, profile.patronymic, profile.homeAddress,
-                    profile.workAddress, profile.email, userOb.password);
-
-            dbManager.addUserToDatabase(userDataEntity);
-            System.out.println("Все прошло");
-            return 200;
+            if (dbManager.getUserByEmailAndPassword(profile.email) == null) {
+                UserDataEntity userDataEntity = new UserDataEntity(profile.name,
+                        profile.surname, profile.patronymic, profile.homeAddress,
+                        profile.workAddress, profile.email, userOb.password);
+                dbManager.addUserToDatabase(userDataEntity);
+                System.out.println("Все прошло");
+                return 200;
+            } else{
+                System.out.println("Пользователь существует");
+                return 409;
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return 500;

@@ -41,17 +41,15 @@ public class NewReportCont implements Initializable {
         }
     }
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         button1.setStyle("-fx-font-size: 14px;");
         button2.setStyle("-fx-font-size: 14px;");
         button3.setStyle("-fx-font-size: 14px;");
-
     }
 
     public void toReportsList() throws IOException {
-        cont.openFxmlScene("/new.fxml");
+        cont.openFxmlScene("/AllReports.fxml");
         SingletonIfClosed.getInstance().setIfClosed(true);
         Stage stage = (Stage) button1.getScene().getWindow();
         stage.close();

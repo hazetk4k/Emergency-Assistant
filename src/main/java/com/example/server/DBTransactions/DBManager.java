@@ -3,6 +3,8 @@ package com.example.server.DBTransactions;
 import com.example.server.Entities.*;
 import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -41,7 +43,6 @@ public class DBManager {
         }
     }
 
-
     public void addReportToDatabase(ReportsEntity report) {
         performDatabaseOperation(entityManager -> entityManager.persist(report));
     }
@@ -63,5 +64,30 @@ public class DBManager {
         } finally {
             entityManager.clear();
         }
+    }
+
+    public List<ReportInfo> getUserReportsInfo() {
+        List<ReportInfo> reportsInfoList = new ArrayList<>();
+        try {
+            String queryStr = "SELECT u FROM UserDataEntity u";
+            TypedQuery<UserDataEntity> query = entityManager.createQuery(queryStr, UserDataEntity.class);
+            List<UserDataEntity> users = query.getResultList();
+
+            for (UserDataEntity user : users) {
+                for (ReportsEntity report : user.getReportsByEmail()) {
+                    String type = report.getType();
+                    Timestamp timestamp = report.getTimestamp();
+                    String place = report.getPlace();
+                    Boolean wasSeen = report.getWasSeen();
+
+                    ReportInfo reportInfo = new ReportInfo(type, timestamp, place, user.getName(), user.getSurname(), user.getPatronymic(), wasSeen);
+                    reportsInfoList.add(reportInfo);
+                }
+            }
+        } finally {
+            entityManager.close();
+        }
+
+        return reportsInfoList;
     }
 }

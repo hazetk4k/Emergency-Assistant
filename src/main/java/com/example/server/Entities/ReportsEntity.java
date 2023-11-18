@@ -38,6 +38,9 @@ public class ReportsEntity {
     @Basic
     @Column(name = "user_email")
     private String userEmail;
+    @ManyToOne
+    @JoinColumn(name = "user_email", referencedColumnName = "email", nullable = false, insertable = false, updatable = false)
+    private UserDataEntity userDataByUserEmail;
 
     public int getIdReport() {
         return idReport;
@@ -157,5 +160,13 @@ public class ReportsEntity {
         result = 31 * result + (wasSeen != null ? wasSeen.hashCode() : 0);
         result = 31 * result + (userEmail != null ? userEmail.hashCode() : 0);
         return result;
+    }
+
+    public UserDataEntity getUserDataByUserEmail() {
+        return userDataByUserEmail;
+    }
+
+    public void setUserDataByUserEmail(UserDataEntity userDataByUserEmail) {
+        this.userDataByUserEmail = userDataByUserEmail;
     }
 }
