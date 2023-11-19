@@ -15,7 +15,7 @@ public class AuthCont implements Initializable {
 
 
     public void OnButton() throws IOException {
-        cont.openFxmlScene("/new_report_menu.fxml");
+        cont.openFxmlScene("/new_report_menu.fxml", "Отслеживание новых заявлений");
         SingletonIfClosed.getInstance().setIfClosed(true);
         Stage stage = (Stage) Button.getScene().getWindow();
         stage.close();

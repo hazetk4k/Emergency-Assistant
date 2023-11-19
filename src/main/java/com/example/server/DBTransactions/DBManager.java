@@ -6,9 +6,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 public class DBManager {
     private EntityManagerFactory managerFactory = Persistence.createEntityManagerFactory("default");
@@ -79,20 +80,48 @@ public class DBManager {
             for (UserDataEntity user : users) {
                 String fullName = user.getSurname() + " " + user.getName().charAt(0) + ". " + user.getPatronymic().charAt(0) + ".";
                 for (ReportsEntity report : user.getReportsByEmail()) {
+                    int id = report.getIdReport();
                     String type = report.getType();
                     Timestamp timestamp = report.getTimestamp();
                     String place = report.getPlace();
                     Boolean wasSeen = report.getWasSeen();
 
-                    ReportInfo reportInfo = new ReportInfo(type, timestamp, place, fullName, wasSeen);
+                    ReportInfo reportInfo = new ReportInfo(id, type, timestamp, place, fullName, wasSeen);
                     reportsInfoList.add(reportInfo);
                 }
             }
 
         } finally {
-            entityManager.close();
+            entityManager.clear();
         }
 
         return reportsInfoList;
+    }
+
+    public TypeKindCharRep getTypeKindChar(String type_name){
+        TypeKindCharRep typeKindCharRep = null;
+        try{
+            String queryStr = "SELECT u FROM TypeEmEntity u WHERE u.name = :type_name";
+            TypedQuery<TypeEmEntity> query = entityManager.createQuery(queryStr, TypeEmEntity.class);
+            query.setParameter("type_name", type_name);
+            TypeEmEntity that_type = query.getSingleResult();
+            KindEmEntity that_kind = that_type.getKindEmByIdKind();
+            CharEmEntity that_char = that_kind.getCharEmByIdChar();
+            Collection<ServiceKindRelationEntity> that_rel = that_kind.getServiceKindRelationsByKindId();
+            List<ServiceEntity> relatedServices = that_rel.stream()
+                    .map(ServiceKindRelationEntity::getServiceByServiceId)
+                    .collect(Collectors.toList());
+            List<String> services = that_rel.stream()
+                    .map(ServiceKindRelationEntity::getServiceByServiceId) // Получаем связанные объекты ServiceEntity
+                    .map(ServiceEntity::getServiceName) // Получаем имена сервисов
+                    .collect(Collectors.toList());
+            typeKindCharRep = new TypeKindCharRep(that_char.getCharName(), that_kind.getKindName(), that_type.getName(), that_type.getRecommendations(), services);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return typeKindCharRep;
+
     }
 }

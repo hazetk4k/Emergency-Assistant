@@ -13,8 +13,9 @@ import java.io.IOException;
 
 public class BaseCont {
 
-    public void openFxmlScene(String name) throws IOException {
+    public void openFxmlScene(String name, String naming) throws IOException {
         Stage stage = new Stage();
+        stage.setTitle(naming);
         stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {

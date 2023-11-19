@@ -69,7 +69,7 @@ public class NewReportCont implements Initializable {
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty()) {
                     ReportInfo rowData = row.getItem();
-                    openNewWindow(rowData);
+                    openThatReport(rowData);
                 }
             });
             return row;
@@ -89,15 +89,16 @@ public class NewReportCont implements Initializable {
         });
     }
 
-    private void openNewWindow(ReportInfo rowData) {
+    private void openThatReport(ReportInfo rowData) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("новое_окно.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/that_report.fxml"));
             Parent root = loader.load();
 
             ThatReportCont controller = loader.getController();
             controller.initData(rowData); // Передача параметра в контроллер нового окна
 
             Stage stage = new Stage();
+            stage.setTitle("Заявление №");
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {
@@ -106,7 +107,7 @@ public class NewReportCont implements Initializable {
     }
 
     public void toReportsList() throws IOException {
-        cont.openFxmlScene("/all_reports.fxml");
+        cont.openFxmlScene("/all_reports.fxml", "Список всех заявлений");
         SingletonIfClosed.getInstance().setIfClosed(true);
         Stage stage = (Stage) button1.getScene().getWindow();
         stage.close();
@@ -116,7 +117,7 @@ public class NewReportCont implements Initializable {
     }
 
     public void toAuthWindow() throws IOException {
-        cont.openFxmlScene("/auth.fxml");
+        cont.openFxmlScene("/auth.fxml", "Авторизация");
         SingletonIfClosed.getInstance().setIfClosed(true);
         Stage stage = (Stage) button3.getScene().getWindow();
         stage.close();

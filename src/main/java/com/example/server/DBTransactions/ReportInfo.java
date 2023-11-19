@@ -3,6 +3,7 @@ package com.example.server.DBTransactions;
 import java.sql.Timestamp;
 
 public class ReportInfo {
+    private int id;
     private String type;
     private Timestamp timestamp;
     private String place;
@@ -49,7 +50,16 @@ public class ReportInfo {
         this.wasSeen = wasSeen;
     }
 
-    public ReportInfo(String type, Timestamp timestamp, String place, String fio, Boolean wasSeen) {
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public ReportInfo(int id, String type, Timestamp timestamp, String place, String fio, Boolean wasSeen) {
+        this.id = id;
         this.type = type;
         this.timestamp = timestamp;
         this.place = place;

@@ -25,6 +25,7 @@ public class MyServer extends Application {
                 System.exit(0);
             }
         });
+        stage.setTitle("Отслеживание новых заявлений");
         stage.show();
     }
 
