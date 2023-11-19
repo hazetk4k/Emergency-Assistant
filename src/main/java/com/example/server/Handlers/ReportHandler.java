@@ -1,6 +1,7 @@
 package com.example.server.Handlers;
 
 import com.example.server.DBTransactions.DBManager;
+import com.example.server.DBTransactions.ReportInfo;
 import com.example.server.DBTransactions.ReportObRep;
 import com.example.server.DBTransactions.ReportRep;
 import com.example.server.Entities.ReportsEntity;
@@ -8,8 +9,11 @@ import com.example.server.Handlers.Base.PostHandler;
 import com.example.server.Service.SingletonIfClosed;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class ReportHandler extends PostHandler {
 
@@ -39,6 +43,12 @@ public class ReportHandler extends PostHandler {
 
             dbManager.addReportToDatabase(report);
             System.out.println("Все прошло");
+
+            List<ReportInfo> updatedDataList = dbManager.getUserReportsInfo();
+            // Конвертируем List в ObservableList
+            ObservableList<ReportInfo> updatedData = FXCollections.observableArrayList(updatedDataList);
+            // Обновляем таблицу в графическом интерфейсе
+            SingletonIfClosed.getInstance().updateTableWithData(updatedData);
             return 200;
         } catch (Exception e) {
             System.out.println(e.getMessage());

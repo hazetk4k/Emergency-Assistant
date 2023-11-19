@@ -1,10 +1,16 @@
 package com.example.server.Service;
 
+import com.example.server.Controllers.NewReportCont;
 import com.example.server.DBTransactions.DBManager;
+import com.example.server.DBTransactions.ReportInfo;
+import javafx.collections.ObservableList;
+
+import java.util.List;
 
 public class SingletonIfClosed {
     static SingletonIfClosed instance;
     public static DBManager manager;
+    private NewReportCont controller;
 
     Boolean ifClosed = true;
     public static SingletonIfClosed getInstance(){
@@ -19,6 +25,16 @@ public class SingletonIfClosed {
             manager = new DBManager();
         }
         return manager;
+    }
+
+    public void setController(NewReportCont controller) {
+        this.controller = controller;
+    }
+
+    public void updateTableWithData(ObservableList<ReportInfo> newData) {
+        if (controller != null) {
+            controller.updateTableWithData(newData);
+        }
     }
 
     public Boolean getIfClosed() {

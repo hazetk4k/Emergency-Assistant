@@ -1,55 +1,34 @@
-package com.example.server.Entities;
+package com.example.server.DBTransactions;
 
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
 
-@Entity
-@Table(name = "reports", schema = "emergency", catalog = "")
-public class ReportsEntity {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
-    @Column(name = "id_report")
+public class FullReportRep {
     private int idReport;
-    @Basic
-    @Column(name = "type")
     private String type;
-    @Basic
-    @Column(name = "additional_info")
     private String additionalInfo;
-    @Basic
-    @Column(name = "place")
     private String place;
-    @Basic
-    @Column(name = "timestamp")
     private Timestamp timestamp;
-    @Basic
-    @Column(name = "areThereAnyCasualties")
     private Boolean areThereAnyCasualties;
-    @Basic
-    @Column(name = "casualtiesAmount")
     private String casualtiesAmount;
-    @Basic
-    @Column(name = "isUserInDanger")
     private Boolean isUserInDanger;
-    @Basic
-    @Column(name = "wasSeen")
     private Boolean wasSeen;
-    @Basic
-    @Column(name = "user_email")
     private String userEmail;
-    @Basic
-    @Column(name = "recieved_date_time")
     private Timestamp recievedDateTime;
-    @Basic
-    @Column(name = "end_up_datatime")
     private Timestamp endUpDateTime;
-    @ManyToOne
-    @JoinColumn(name = "user_email", referencedColumnName = "email", insertable = false, updatable = false)
-    private UserDataEntity userByEmail;
+    private String home;
 
     public int getIdReport() {
         return idReport;
+    }
+
+    public String getHome() {
+        return home;
+    }
+
+    public void setHome(String home) {
+        this.home = home;
     }
 
     public void setIdReport(int idReport) {
@@ -104,12 +83,12 @@ public class ReportsEntity {
         this.casualtiesAmount = casualtiesAmount;
     }
 
-    public Boolean getIsUserInDanger() {
+    public Boolean getUserInDanger() {
         return isUserInDanger;
     }
 
-    public void setIsUserInDanger(Boolean isUserInDanger) {
-        this.isUserInDanger = isUserInDanger;
+    public void setUserInDanger(Boolean userInDanger) {
+        isUserInDanger = userInDanger;
     }
 
     public Boolean getWasSeen() {
@@ -128,14 +107,6 @@ public class ReportsEntity {
         this.userEmail = userEmail;
     }
 
-    public UserDataEntity getUserByEmail() {
-        return userByEmail;
-    }
-
-    public void setUserByEmail(UserDataEntity userByEmail) {
-        this.userByEmail = userByEmail;
-    }
-
     public Timestamp getRecievedDateTime() {
         return recievedDateTime;
     }
@@ -152,11 +123,33 @@ public class ReportsEntity {
         this.endUpDateTime = endUpDateTime;
     }
 
-    public Boolean getUserInDanger() {
-        return isUserInDanger;
-    }
-
-    public void setUserInDanger(Boolean userInDanger) {
-        isUserInDanger = userInDanger;
+    public FullReportRep(
+            int idReport,
+            String type,
+            String additionalInfo,
+            String place,
+            Timestamp timestamp,
+            Boolean areThereAnyCasualties,
+            String casualtiesAmount,
+            Boolean isUserInDanger,
+            Boolean wasSeen,
+            String userEmail,
+            Timestamp recievedDateTime,
+            Timestamp endUpDateTime,
+            String home
+    ) {
+        this.idReport = idReport;
+        this.type = type;
+        this.additionalInfo = additionalInfo;
+        this.place = place;
+        this.timestamp = timestamp;
+        this.areThereAnyCasualties = areThereAnyCasualties;
+        this.casualtiesAmount = casualtiesAmount;
+        this.isUserInDanger = isUserInDanger;
+        this.wasSeen = wasSeen;
+        this.userEmail = userEmail;
+        this.recievedDateTime = recievedDateTime;
+        this.endUpDateTime = endUpDateTime;
+        this.home = home;
     }
 }

@@ -1,0 +1,13 @@
+.root {
+    /* Настройка фона для AnchorPane */
+    -fx-background-image: url('/images/background4.jpg');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover; /* Сохраняет исходный размер изображения */
+    -fx-background-position: center; /* Центрирует изображение */
+    /* Другие свойства, если нужно */
+}
+
+.bold-white-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}

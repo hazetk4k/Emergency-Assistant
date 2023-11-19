@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="/css/ReportsStylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.server.Controllers.NewReportCont">
+<AnchorPane prefHeight="620.0" prefWidth="859.0" stylesheets="/css/ReportsStylesheet.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.server.Controllers.NewReportCont">
 
     <Button fx:id="toggleMenuButton" onAction="#toggleMenu" prefWidth="230.0" text="☰" />
 
-    <TableView fx:id="tableView" styleClass="custom-table" layoutX="18.0" layoutY="34.0" prefHeight="400.0" prefWidth="564.0" AnchorPane.bottomAnchor="5.199999999999989" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="34.0">
+    <TableView fx:id="tableView" layoutX="19.0" layoutY="30.0" prefHeight="581.0" prefWidth="818.0" styleClass="custom-table" AnchorPane.bottomAnchor="9.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="30.0">
         <columns>
             <TableColumn fx:id="id" prefWidth="75.0" text="№" />
             <TableColumn fx:id="type" prefWidth="75.0" text="Тип" />

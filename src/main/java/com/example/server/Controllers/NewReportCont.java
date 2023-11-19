@@ -5,6 +5,7 @@ import com.example.server.DBTransactions.ReportInfo;
 import com.example.server.Service.SingletonIfClosed;
 import javafx.animation.TranslateTransition;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class NewReportCont implements Initializable {
@@ -56,8 +58,21 @@ public class NewReportCont implements Initializable {
         return dbManager.getUserReportsInfo();
     }
 
+    public void updateTableWithData(ObservableList<ReportInfo> newData) {
+        Platform.runLater(() -> {
+            tableView.getItems().clear(); // Очистить
+            tableView.getItems().addAll(newData); // Добавить
+        });
+    }
+
+    public void updateTableWithMark(ObservableList<ReportInfo> newData) {
+        tableView.getItems().clear();
+        tableView.getItems().addAll(newData);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        SingletonIfClosed.getInstance().setController(this);
         id.setCellValueFactory(new PropertyValueFactory<ReportInfo, Integer>("id"));
         type.setCellValueFactory(new PropertyValueFactory<ReportInfo, String>("type"));
         timestamp.setCellValueFactory(new PropertyValueFactory<ReportInfo, Timestamp>("timestamp"));
@@ -70,7 +85,6 @@ public class NewReportCont implements Initializable {
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
                 ReportInfo rowData = tableView.getSelectionModel().getSelectedItem();
-                System.out.println(rowData.getType());
                 openThatReport(rowData);
             }
         });

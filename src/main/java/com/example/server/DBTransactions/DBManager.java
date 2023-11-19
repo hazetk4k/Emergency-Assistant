@@ -1,11 +1,13 @@
 package com.example.server.DBTransactions;
 
 import com.example.server.Entities.*;
+import com.example.server.Service.SingletonIfClosed;
 import jakarta.persistence.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
@@ -47,6 +49,8 @@ public class DBManager {
     }
 
     public void addReportToDatabase(ReportsEntity report) {
+        Timestamp currentDate = Timestamp.valueOf(LocalDateTime.now());
+        report.setRecievedDateTime(currentDate);
         performDatabaseOperation(entityManager -> entityManager.persist(report));
     }
 
@@ -98,9 +102,9 @@ public class DBManager {
         return reportsInfoList;
     }
 
-    public TypeKindCharRep getTypeKindChar(String type_name){
+    public TypeKindCharRep getTypeKindChar(String type_name) {
         TypeKindCharRep typeKindCharRep = null;
-        try{
+        try {
             String queryStr = "SELECT u FROM TypeEmEntity u WHERE u.name = :type_name";
             TypedQuery<TypeEmEntity> query = entityManager.createQuery(queryStr, TypeEmEntity.class);
             query.setParameter("type_name", type_name);
@@ -113,12 +117,64 @@ public class DBManager {
                     .map(ServiceEntity::getServiceName)
                     .collect(Collectors.toList());
             typeKindCharRep = new TypeKindCharRep(that_char.getCharName(), that_kind.getKindName(), that_type.getName(), that_type.getRecommendations(), services);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             entityManager.clear();
         }
         return typeKindCharRep;
 
+    }
+
+    public void resolveEmergency(int id) {
+        ReportsEntity report = entityManager.find(ReportsEntity.class, id);
+        try {
+            if (report != null) {
+                transaction.begin();
+                report.setWasSeen(true);
+                LocalDateTime currentDateTime = LocalDateTime.now();
+                Timestamp currentTimestamp = Timestamp.valueOf(currentDateTime);
+                report.setEndUpDateTime(currentTimestamp);
+                entityManager.merge(report);
+                transaction.commit();
+            }
+            SingletonIfClosed.getInstance().updateTableWithData(getUserReportsInfo());
+        } catch (Exception e) {
+            if (transaction != null && transaction.isActive()) {
+                transaction.rollback();
+            }
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+    }
+
+    public FullReportRep getFullReport(int id) {
+        FullReportRep rep = null;
+        try {
+            String queryStr = "SELECT n FROM ReportsEntity n WHERE n.idReport = :id";
+            TypedQuery<ReportsEntity> query = entityManager.createQuery(queryStr, ReportsEntity.class);
+            query.setParameter("id", id);
+            ReportsEntity thatReport = query.getSingleResult();
+            UserDataEntity user = thatReport.getUserByEmail();
+            rep = new FullReportRep(thatReport.getIdReport(),
+                    thatReport.getType(),
+                    thatReport.getAdditionalInfo(),
+                    thatReport.getPlace(),
+                    thatReport.getTimestamp(),
+                    thatReport.getAreThereAnyCasualties(),
+                    thatReport.getCasualtiesAmount(),
+                    thatReport.getUserInDanger(),
+                    thatReport.getWasSeen(),
+                    thatReport.getUserEmail(),
+                    thatReport.getRecievedDateTime(),
+                    thatReport.getEndUpDateTime(),
+                    user.getHomeAddress());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return rep;
     }
 }
