@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class ThatReportCont implements Initializable {
+public class ThatReportCont{
     @FXML
     public TextArea actionsTextArea;
     @FXML
@@ -48,10 +48,8 @@ public class ThatReportCont implements Initializable {
 
     public void initData(ReportInfo rowData) {
         this.rowData = rowData;
-    }
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        TypeKindCharRep info =  getEmergencyData();
+        System.out.println(rowData.getType());
+        TypeKindCharRep info = getEmergencyData();
 
 
     }

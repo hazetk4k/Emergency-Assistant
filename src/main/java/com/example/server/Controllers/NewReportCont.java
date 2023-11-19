@@ -5,6 +5,7 @@ import com.example.server.DBTransactions.ReportInfo;
 import com.example.server.Service.SingletonIfClosed;
 import javafx.animation.TranslateTransition;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,6 +32,8 @@ public class NewReportCont implements Initializable {
     @FXML
     private TableView<ReportInfo> tableView;
     @FXML
+    public TableColumn<ReportInfo, Integer> id;
+    @FXML
     public TableColumn<ReportInfo, String> type;
     @FXML
     public TableColumn<ReportInfo, Boolean> wasSeen;
@@ -55,25 +58,23 @@ public class NewReportCont implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        id.setCellValueFactory(new PropertyValueFactory<ReportInfo, Integer>("id"));
         type.setCellValueFactory(new PropertyValueFactory<ReportInfo, String>("type"));
         timestamp.setCellValueFactory(new PropertyValueFactory<ReportInfo, Timestamp>("timestamp"));
         place.setCellValueFactory(new PropertyValueFactory<ReportInfo, String>("place"));
         fio.setCellValueFactory(new PropertyValueFactory<ReportInfo, String>("fio"));
         wasSeen.setCellValueFactory(new PropertyValueFactory<ReportInfo, Boolean>("wasSeen"));
 
-
         tableView.setItems(initialData());
 
-        tableView.setRowFactory(tv -> {
-            TableRow<ReportInfo> row = new TableRow<>();
-            row.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    ReportInfo rowData = row.getItem();
-                    openThatReport(rowData);
-                }
-            });
-            return row;
+        tableView.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
+                ReportInfo rowData = tableView.getSelectionModel().getSelectedItem();
+                System.out.println(rowData.getType());
+                openThatReport(rowData);
+            }
         });
+
         wasSeen.setCellFactory(column -> new TableCell<ReportInfo, Boolean>() {
             @Override
             protected void updateItem(Boolean item, boolean empty) {
@@ -82,7 +83,7 @@ public class NewReportCont implements Initializable {
                     setText(null);
                     setStyle("");
                 } else {
-                    setText(item ? "Просмотрено" : "Новое");
+                    setText(item ? "Действия предприняты" : "Новое");
                     setTextFill(item ? Color.GREEN : Color.RED);
                 }
             }
@@ -98,7 +99,7 @@ public class NewReportCont implements Initializable {
             controller.initData(rowData); // Передача параметра в контроллер нового окна
 
             Stage stage = new Stage();
-            stage.setTitle("Заявление №");
+            stage.setTitle("Заявление №" + rowData.getId());
             stage.setScene(new Scene(root));
             stage.show();
         } catch (IOException e) {

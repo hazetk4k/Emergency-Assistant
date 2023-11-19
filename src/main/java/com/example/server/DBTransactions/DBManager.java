@@ -108,12 +108,9 @@ public class DBManager {
             KindEmEntity that_kind = that_type.getKindEmByIdKind();
             CharEmEntity that_char = that_kind.getCharEmByIdChar();
             Collection<ServiceKindRelationEntity> that_rel = that_kind.getServiceKindRelationsByKindId();
-            List<ServiceEntity> relatedServices = that_rel.stream()
-                    .map(ServiceKindRelationEntity::getServiceByServiceId)
-                    .collect(Collectors.toList());
             List<String> services = that_rel.stream()
-                    .map(ServiceKindRelationEntity::getServiceByServiceId) // Получаем связанные объекты ServiceEntity
-                    .map(ServiceEntity::getServiceName) // Получаем имена сервисов
+                    .map(ServiceKindRelationEntity::getServiceByServiceId)
+                    .map(ServiceEntity::getServiceName)
                     .collect(Collectors.toList());
             typeKindCharRep = new TypeKindCharRep(that_char.getCharName(), that_kind.getKindName(), that_type.getName(), that_type.getRecommendations(), services);
         }catch(Exception e){
