@@ -4,7 +4,9 @@ import com.example.server.Controllers.BaseCont;
 import com.example.server.DBTransactions.DBManager;
 import com.example.server.Service.SingletonIfClosed;
 import javafx.fxml.*;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -18,6 +20,7 @@ public class AuthCont implements Initializable {
     public TextField fieldLogin;
     @FXML
     public PasswordField fieldPassword;
+    public Label labelProgress;
     BaseCont cont = new BaseCont();
 
 
@@ -36,7 +39,7 @@ public class AuthCont implements Initializable {
             fieldPassword.setStyle("-fx-prompt-text-fill: red");
             fieldPassword.setPromptText("Неверный пароль");
         } else if (answer.contains("админ")) {
-            cont.openFxmlScene("/new_report_menu.fxml", "Управление информацией по чс");
+            cont.openFxmlScene("/admin_menu.fxml", "Управление информацией по чс");
             SingletonIfClosed.getInstance().setIfClosed(true);
             Stage stage = (Stage) Button.getScene().getWindow();
             stage.close();

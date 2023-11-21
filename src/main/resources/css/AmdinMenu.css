@@ -1,0 +1,14 @@
+.root {
+
+    -fx-background-image: url('/images/Dispetcher.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: cover; /* Сохраняет исходный размер изображения */
+    -fx-background-position: center; /* Центрирует изображение */
+
+}
+
+.bold-white-label {
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+

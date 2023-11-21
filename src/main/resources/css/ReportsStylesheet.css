@@ -1,6 +1,6 @@
 .root {
     /* Настройка фона для AnchorPane */
-    -fx-background-image: url('/images/Dispetcher.png');
+    -fx-background-image: url('/images/Back1.png');
     -fx-background-repeat: no-repeat;
     -fx-background-size: cover; /* Сохраняет исходный размер изображения */
     -fx-background-position: center; /* Центрирует изображение */

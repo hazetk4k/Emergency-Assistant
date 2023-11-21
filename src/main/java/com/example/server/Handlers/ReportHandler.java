@@ -43,7 +43,6 @@ public class ReportHandler extends PostHandler {
 
             dbManager.addReportToDatabase(report);
             System.out.println("Все прошло");
-
             List<ReportInfo> updatedDataList = dbManager.getUserReportsInfo();
             // Конвертируем List в ObservableList
             ObservableList<ReportInfo> updatedData = FXCollections.observableArrayList(updatedDataList);
