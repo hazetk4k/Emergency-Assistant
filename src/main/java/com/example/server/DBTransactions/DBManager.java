@@ -10,6 +10,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -176,5 +177,33 @@ public class DBManager {
             entityManager.clear();
         }
         return rep;
+    }
+
+    public String checkAuthParametrs(String login_syst, String password) {
+        String result = null;
+        try {
+            String queryStr = "SELECT n FROM SystUserEntity n WHERE n.loginSyst = :login_syst";
+            TypedQuery<SystUserEntity> query = entityManager.createQuery(queryStr, SystUserEntity.class);
+            query.setParameter("login_syst", login_syst);
+            SystUserEntity systUserEntity = query.getSingleResult();
+            if (systUserEntity == null) {
+                result = "no such data";
+            } else {
+                if (Objects.equals(systUserEntity.getPassword(), password)) {
+                    if (systUserEntity.getStatusSyst() == 1) {
+                        return "админ";
+                    } else {
+                        return "диспетчер";
+                    }
+                } else {
+                    result = "incorrect pas";
+                }
+            }
+        } catch (Exception e) {
+            System.out.println();
+        } finally {
+            entityManager.clear();
+        }
+        return result;
     }
 }

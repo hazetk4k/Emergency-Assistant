@@ -5,11 +5,15 @@ import com.example.server.DBTransactions.FullReportRep;
 import com.example.server.DBTransactions.ReportInfo;
 import com.example.server.DBTransactions.TypeKindCharRep;
 import com.example.server.Service.SingletonIfClosed;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.CheckBoxListCell;
 
 import java.time.LocalDateTime;
 
@@ -59,6 +63,7 @@ public class ThatReportCont {
             ObservableList<String> servicesList = FXCollections.observableArrayList();
             servicesList.addAll(info.getServices());
             listOfServices.setItems(servicesList);
+
             EmergencyField.setText("Указанный заявителем Тип ЧС:\t\t\t" + info.getName() + ";\n" + "Определен вид ЧС:\t\t\t\t\t" + info.getKind_name() + ";\n" + "Характер ЧС:\t\t\t\t\t\t\t" + info.getChar_name() + ";\n\n" + "Направить службы по указанному адресу: " + rowData.getPlace() + ".");
             dateAndTime.setText(rowData.getTimestamp().toString());
             fio.setText(rowData.getFio());
@@ -82,8 +87,18 @@ public class ThatReportCont {
         }
     }
 
+    private void selectionChanged(ObservableValue<? extends String> Observable, String oldValue, String newValue){
+        ObservableList<String> selectedItems = listOfServices.getSelectionModel().getSelectedItems();
+        String getSelectedItem = (selectedItems.isEmpty())?"Не выбрано":selectedItems.toString();
+       // selection.setText(getSelectedItem); selection это лейбл не определен
+
+        //в init
+        //listOfServices.getSelectionModel(SelectionMode.MULTIPLE);
+       // listOfServices.getSelectionModel().selectedIndexProperty().addListener(this::selectionChanged);
+    }
+
     private void showAlert() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION); //INFORMATION, ERROR, WARNING, CONFIRMATION
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION); //Починить алерт!
         alert.setTitle("Выполнено");
         alert.setHeaderText(null);
         LocalDateTime currentDateTime = LocalDateTime.now();
