@@ -124,7 +124,32 @@ public class DBManager {
             entityManager.clear();
         }
         return typeKindCharRep;
+    }
 
+    public int isThereType(String type) {
+        String query = "SELECT COUNT(*) FROM TypeEmEntity t WHERE t.name = :type_name";
+        Query q = entityManager.createQuery(query);
+        q.setParameter("type_name", type);
+        Long count = (Long) q.getSingleResult();
+        System.out.println(count);
+        if (count > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
+    public int isThereKind(String kind){
+        String query = "SELECT COUNT(*) FROM KindEmEntity t WHERE t.kindName = :kindName";
+        Query q = entityManager.createQuery(query);
+        q.setParameter("kindName", kind);
+        Long count = (Long) q.getSingleResult();
+        System.out.println(count);
+        if (count > 0) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     public void resolveEmergency(int id) {
@@ -205,5 +230,67 @@ public class DBManager {
             entityManager.clear();
         }
         return result;
+    }
+
+    public List<String> getAllCharNames() {
+        List<String> result = null;
+        try {
+            TypedQuery<String> query = entityManager.createQuery(
+                    "SELECT ce.charName FROM CharEmEntity ce", String.class);
+            result = query.getResultList();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return result;
+    }
+
+    public List<String> getAllKindNames() {
+        List<String> result = null;
+        try {
+            TypedQuery<String> query = entityManager.createQuery(
+                    "SELECT ce.kindName FROM KindEmEntity ce", String.class);
+            result = query.getResultList();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return result;
+    }
+
+    public List<String> getAllServices() {
+        List<String> result = null;
+        try {
+            TypedQuery<String> query = entityManager.createQuery(
+                    "SELECT ce.serviceName FROM ServiceEntity ce", String.class);
+            result = query.getResultList();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return result;
+    }
+
+    public List<String> getServicesByKind(String kindName) {
+        List<String> services = null;
+        try {
+            String queryStr = "SELECT n FROM KindEmEntity n WHERE n.kindName = :kindName";
+            TypedQuery<KindEmEntity> query = entityManager.createQuery(queryStr, KindEmEntity.class);
+            query.setParameter("kindName", kindName);
+            KindEmEntity that_kind = query.getSingleResult();
+            Collection<ServiceKindRelationEntity> that_rel = that_kind.getServiceKindRelationsByKindId();
+            services = that_rel.stream()
+                    .map(ServiceKindRelationEntity::getServiceByServiceId)
+                    .map(ServiceEntity::getServiceName)
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return services;
     }
 }

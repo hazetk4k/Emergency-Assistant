@@ -1,12 +1,11 @@
-package com.example.server.Controllers.Auth;
+package com.example.server.Controllers;
 
-import com.example.server.Controllers.BaseCont;
 import com.example.server.DBTransactions.DBManager;
 import com.example.server.Service.SingletonIfClosed;
-import javafx.fxml.*;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 

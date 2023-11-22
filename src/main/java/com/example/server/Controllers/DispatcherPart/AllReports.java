@@ -1,4 +1,4 @@
-package com.example.server.Controllers;
+package com.example.server.Controllers.DispatcherPart;
 
 import javafx.fxml.Initializable;
 

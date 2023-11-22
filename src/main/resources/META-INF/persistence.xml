@@ -12,6 +12,7 @@
         <class>com.example.server.Entities.TypeEmEntity</class>
         <class>com.example.server.Entities.UserDataEntity</class>
         <class>com.example.server.Entities.SystUserEntity</class>
+        <class>com.example.server.Entities.SavedChoiceEntity</class>
         <properties>
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/emergency"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>

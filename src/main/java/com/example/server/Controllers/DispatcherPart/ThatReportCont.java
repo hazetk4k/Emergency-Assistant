@@ -1,26 +1,21 @@
-package com.example.server.Controllers;
+package com.example.server.Controllers.DispatcherPart;
 
 import com.example.server.DBTransactions.DBManager;
 import com.example.server.DBTransactions.FullReportRep;
 import com.example.server.DBTransactions.ReportInfo;
 import com.example.server.DBTransactions.TypeKindCharRep;
 import com.example.server.Service.SingletonIfClosed;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.CheckBoxListCell;
 
 import java.time.LocalDateTime;
 
 public class ThatReportCont {
     @FXML
-    public TextArea recommendationsTextArea;
-
+    public TextArea recommendationsTextArea;//сделано
     @FXML
     public ListView<String> listOfServices; //сделано
     @FXML
@@ -42,7 +37,7 @@ public class ThatReportCont {
     public TextField email; //сделано
     @FXML
     public TextField homeAddress; //сделано
-    public Button resolveButton;
+    public Button resolveButton; //сделано
     public Button reportButton;
     private ReportInfo rowData;
     DBManager dbManager = SingletonIfClosed.getInstance().getDBManager();
@@ -76,9 +71,9 @@ public class ThatReportCont {
                 amountOfCasualities.setDisable(true);
             }
             if (fullRep.getUserInDanger()) {
-                isUserInDanger.setText("Есть такое");
+                isUserInDanger.setText("Да");
             } else {
-                isUserInDanger.setText("К сожалению нет");
+                isUserInDanger.setText("Нет");
             }
             additionalData.setText(fullRep.getAdditionalInfo());
             homeAddress.setText(fullRep.getHome());
@@ -87,23 +82,12 @@ public class ThatReportCont {
         }
     }
 
-    private void selectionChanged(ObservableValue<? extends String> Observable, String oldValue, String newValue){
-        ObservableList<String> selectedItems = listOfServices.getSelectionModel().getSelectedItems();
-        String getSelectedItem = (selectedItems.isEmpty())?"Не выбрано":selectedItems.toString();
-       // selection.setText(getSelectedItem); selection это лейбл не определен
-
-        //в init
-        //listOfServices.getSelectionModel(SelectionMode.MULTIPLE);
-       // listOfServices.getSelectionModel().selectedIndexProperty().addListener(this::selectionChanged);
-    }
-
     private void showAlert() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION); //Починить алерт!
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Выполнено");
         alert.setHeaderText(null);
         LocalDateTime currentDateTime = LocalDateTime.now();
-        alert.setContentText("Ситуация разрешена.\n" +
-                "Фиксация момента разрешения:" + currentDateTime);
+        alert.setContentText("Ситуация разрешена.");
         alert.showAndWait();
     }
 

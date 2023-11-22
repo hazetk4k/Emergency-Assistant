@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="716.0" prefWidth="935.0" stylesheets="/css/ReportInfo.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.server.Controllers.ThatReportCont">
+<VBox alignment="CENTER" prefHeight="716.0" prefWidth="935.0" stylesheets="/css/ReportInfo.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.server.Controllers.DispatcherPart.ThatReportCont">
     <children>
         <Label maxWidth="1.7976931348623157E308" styleClass="bold-white-label" text="Информационная поддержка, полученная в ходе анализа переданных заявителем сведений">
             <font>
@@ -25,7 +25,7 @@
             </padding>
         </Label>
         <Separator prefWidth="200.0" />
-        <VBox alignment="CENTER_LEFT" prefHeight="169.0" prefWidth="925.0">
+        <VBox alignment="CENTER_LEFT" prefHeight="194.0" prefWidth="925.0">
             <children>
                 <HBox prefHeight="160.0" prefWidth="914.0" VBox.vgrow="ALWAYS">
                     <children>
@@ -164,7 +164,7 @@
             </children>
         </HBox>
         <Separator prefWidth="200.0" />
-        <HBox prefHeight="168.0" prefWidth="935.0" VBox.vgrow="ALWAYS">
+        <HBox prefHeight="210.0" prefWidth="925.0" VBox.vgrow="ALWAYS">
             <children>
                 <VBox alignment="TOP_CENTER" prefHeight="198.0" prefWidth="164.0" HBox.hgrow="ALWAYS">
                     <children>
@@ -183,7 +183,7 @@
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                 </Label>
-                                <TextField fx:id="fio" HBox.hgrow="ALWAYS">
+                                <TextField fx:id="fio" editable="false" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
                                         <Insets right="5.0" />
                                     </HBox.margin>
@@ -197,7 +197,7 @@
                                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                     </padding>
                                 </Label>
-                                <TextField fx:id="email" HBox.hgrow="ALWAYS">
+                                <TextField fx:id="email" editable="false" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
                                         <Insets right="5.0" />
                                     </HBox.margin>
@@ -217,7 +217,7 @@
                                         <Insets />
                                     </HBox.margin>
                                 </Label>
-                                <TextField fx:id="homeAddress" HBox.hgrow="ALWAYS">
+                                <TextField fx:id="homeAddress" editable="false" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
                                         <Insets right="5.0" />
                                     </HBox.margin>
@@ -239,7 +239,7 @@
                      <padding>
                         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                      </padding></Label>
-                        <TextArea fx:id="recommendationsTextArea" prefHeight="200.0" prefWidth="200.0" />
+                        <TextArea fx:id="recommendationsTextArea" editable="false" prefHeight="200.0" prefWidth="200.0" />
                     </children>
                 </VBox>
             </children>

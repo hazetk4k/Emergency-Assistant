@@ -1,12 +1,11 @@
-package com.example.server.Controllers;
+package com.example.server.Controllers.DispatcherPart;
 
+import com.example.server.Controllers.BaseCont;
 import com.example.server.DBTransactions.DBManager;
 import com.example.server.DBTransactions.ReportInfo;
 import com.example.server.Service.SingletonIfClosed;
 import javafx.animation.TranslateTransition;
-
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,7 +13,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -25,7 +27,6 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class NewReportCont implements Initializable {
@@ -53,8 +54,9 @@ public class NewReportCont implements Initializable {
     @FXML
     private VBox burgerMenu;
 
+    DBManager dbManager = SingletonIfClosed.getInstance().getDBManager();
+
     ObservableList<ReportInfo> initialData() {
-        DBManager dbManager = SingletonIfClosed.getInstance().getDBManager();
         return dbManager.getUserReportsInfo();
     }
 
@@ -85,7 +87,11 @@ public class NewReportCont implements Initializable {
         tableView.setOnMouseClicked(event -> {
             if (event.getClickCount() == 2 && tableView.getSelectionModel().getSelectedItem() != null) {
                 ReportInfo rowData = tableView.getSelectionModel().getSelectedItem();
-                openThatReport(rowData);
+                if (dbManager.isThereType(rowData.getType()) == 0) {
+                    openOtherReport(rowData);
+                } else {
+                    openThatReport(rowData);
+                }
             }
         });
 
@@ -102,6 +108,23 @@ public class NewReportCont implements Initializable {
                 }
             }
         });
+    }
+
+    private void openOtherReport(ReportInfo rowData) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/no_type_that_report.fxml"));
+            Parent root = loader.load();
+
+            OtherReportController controller = loader.getController();
+            controller.initData(rowData);
+
+            Stage stage = new Stage();
+            stage.setTitle("Заявление №" + rowData.getId());
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void openThatReport(ReportInfo rowData) {

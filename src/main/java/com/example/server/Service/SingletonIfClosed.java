@@ -1,11 +1,9 @@
 package com.example.server.Service;
 
-import com.example.server.Controllers.NewReportCont;
+import com.example.server.Controllers.DispatcherPart.NewReportCont;
 import com.example.server.DBTransactions.DBManager;
 import com.example.server.DBTransactions.ReportInfo;
 import javafx.collections.ObservableList;
-
-import java.util.List;
 
 public class SingletonIfClosed {
     static SingletonIfClosed instance;
