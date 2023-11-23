@@ -47,13 +47,8 @@ public class ReportsEntity {
     @ManyToOne
     @JoinColumn(name = "user_email", referencedColumnName = "email", insertable = false, updatable = false)
     private UserDataEntity userByEmail;
-    @Basic
-    @Column(name = "exclusive_saved")
-    private Integer exclusiveSaved;
-    @ManyToOne
-    @JoinColumn(name = "exclusive_saved", referencedColumnName = "id_saved",  insertable = false, updatable = false)
-    private SavedChoiceEntity savedChoiceByExclusiveSaved;
-
+    @OneToOne(mappedBy = "reportsByRepotId")
+    private DispChoiceEntity dispChoicesByIdReport;
 
     public int getIdReport() {
         return idReport;
@@ -167,37 +162,11 @@ public class ReportsEntity {
         isUserInDanger = userInDanger;
     }
 
-    public Integer getExclusiveSaved() {
-        return exclusiveSaved;
+    public DispChoiceEntity getDispChoicesByIdReport() {
+        return dispChoicesByIdReport;
     }
 
-    public void setExclusiveSaved(Integer exclusiveSaved) {
-        this.exclusiveSaved = exclusiveSaved;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ReportsEntity that = (ReportsEntity) o;
-
-        if (exclusiveSaved != null ? !exclusiveSaved.equals(that.exclusiveSaved) : that.exclusiveSaved != null)
-            return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        return exclusiveSaved != null ? exclusiveSaved.hashCode() : 0;
-    }
-
-    public SavedChoiceEntity getSavedChoiceByExclusiveSaved() {
-        return savedChoiceByExclusiveSaved;
-    }
-
-    public void setSavedChoiceByExclusiveSaved(SavedChoiceEntity savedChoiceByExclusiveSaved) {
-        this.savedChoiceByExclusiveSaved = savedChoiceByExclusiveSaved;
+    public void setDispChoicesByIdReport(DispChoiceEntity dispChoicesByIdReport) {
+        this.dispChoicesByIdReport = dispChoicesByIdReport;
     }
 }

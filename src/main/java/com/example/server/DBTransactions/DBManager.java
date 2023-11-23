@@ -49,6 +49,36 @@ public class DBManager {
         }
     }
 
+    public ChoiceRep getChoicesForReport(int reportId){
+        ChoiceRep choiceRep = null;
+        try{
+            TypedQuery<DispChoiceEntity> query = entityManager.createQuery(
+                            "SELECT d FROM DispChoiceEntity d WHERE d.reportsByRepotId.id = :reportId", DispChoiceEntity.class)
+                    .setParameter("reportId", reportId);
+            DispChoiceEntity dispChoiceEntity = query.getSingleResult();
+            choiceRep = new ChoiceRep(dispChoiceEntity.getNameChar(), dispChoiceEntity.getNameType(),dispChoiceEntity.getServices());
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }finally {
+            entityManager.clear();
+        }
+        return choiceRep;
+    }
+
+    public Long isThereChoice(int reportId){
+        Long count = null;
+        try{
+            String queryString = "SELECT COUNT(d) FROM DispChoiceEntity d WHERE d.reportsByRepotId.id = :reportId";
+            count = entityManager.createQuery(queryString, Long.class)
+                    .setParameter("reportId", reportId)
+                    .getSingleResult();
+        }catch (Exception e){
+        }finally {
+            entityManager.clear();
+        }
+        return count;
+    }
+
     public void addReportToDatabase(ReportsEntity report) {
         Timestamp currentDate = Timestamp.valueOf(LocalDateTime.now());
         report.setRecievedDateTime(currentDate);
@@ -57,6 +87,26 @@ public class DBManager {
 
     public void addUserToDatabase(UserDataEntity user) {
         performDatabaseOperation(entityManager -> entityManager.persist(user));
+    }
+
+    public void makeDicision(String char_name, String kind_name, String services, int reportId) {
+        try {
+            DispChoiceEntity newEntity = new DispChoiceEntity();
+            newEntity.setNameChar(char_name);
+            newEntity.setNameType(kind_name);
+            newEntity.setServices(services);
+            ReportsEntity relatedReport = entityManager.find(ReportsEntity.class, reportId);
+            // Установка связи с ReportsEntity
+            newEntity.setReportsByRepotId(relatedReport);
+            // Сохранение новой записи в базе данных
+            entityManager.getTransaction().begin();
+            entityManager.persist(newEntity);
+            entityManager.getTransaction().commit();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }finally {
+            entityManager.clear();
+        }
     }
 
     private void performDatabaseOperation(Consumer<EntityManager> operation) {

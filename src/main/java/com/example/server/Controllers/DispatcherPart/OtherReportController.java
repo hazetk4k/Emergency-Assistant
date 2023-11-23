@@ -1,5 +1,6 @@
 package com.example.server.Controllers.DispatcherPart;
 
+import com.example.server.DBTransactions.ChoiceRep;
 import com.example.server.DBTransactions.DBManager;
 import com.example.server.DBTransactions.FullReportRep;
 import com.example.server.DBTransactions.ReportInfo;
@@ -57,20 +58,32 @@ public class OtherReportController {
 
     public void initData(ReportInfo rowData) {
         // инициализация
+
         this.rowData = rowData;
         reportButton.setDisable(true);
         if (rowData.getWasSeen()) {
             resolveButton.setDisable(true);
             reportButton.setDisable(false);
         }
-        FullReportRep fullRep = dbManager.getFullReport(rowData.getId());
-
         // дополнительно
         typeField.setText(rowData.getType());
         List<String> charNames = dbManager.getAllCharNames();
         chceBoxChar.getItems().addAll(charNames);
         List<String> kindNames = dbManager.getAllKindNames();
         cmbBoxKinds.getItems().addAll(kindNames);
+
+        if (dbManager.isThereChoice(rowData.getId()) > 0) {
+            ChoiceRep choices = dbManager.getChoicesForReport(rowData.getId());
+            chceBoxChar.setValue(choices.textChar);
+            cmbBoxKinds.setValue(choices.textKind);
+            chsdServices.setText(choices.services);
+            chceBoxChar.setDisable(true);
+            cmbBoxKinds.setDisable(true);
+            chsdServices.setDisable(true);
+            listChsServices.setDisable(true);
+        }
+        FullReportRep fullRep = dbManager.getFullReport(rowData.getId());
+
 
         // данные из fullRep
         if (fullRep.getUserInDanger()) {
@@ -106,34 +119,65 @@ public class OtherReportController {
         cmbBoxKinds.setOnAction(event -> {
             String selectedKind = cmbBoxKinds.getSelectionModel().getSelectedItem();
             if (selectedKind != null) {
-                if(dbManager.isThereKind(selectedKind) != 0){
+                if (dbManager.isThereKind(selectedKind) != 0) {
                     List<String> servicesForKind = dbManager.getServicesByKind(selectedKind);
                     listOfServices.clear();
                     for (String service : servicesForKind) {
                         listOfServices.appendText(service + "\n");
                     }
-                }else {
+                } else {
                     listOfServices.clear();
                 }
             }
         });
+
     }
 
 
-    private void selectionChanged(ObservableValue<? extends  String> Observable, String oldVal, String newVal){
+    private void selectionChanged(ObservableValue<? extends String> Observable, String oldVal, String newVal) {
         ObservableList<String> selectedItems = listChsServices.getSelectionModel().getSelectedItems();
-        String getSelectedItem = (selectedItems.isEmpty())?"":selectedItems.toString();
+        String getSelectedItem = (selectedItems.isEmpty()) ? "" : selectedItems.toString();
         chsdServices.setText(getSelectedItem);
     }
+
     public void generateReport(ActionEvent actionEvent) {
 
     }
 
+    private boolean areFieldsFilled() {
+        String choiceValue = chceBoxChar.getValue();
+        String comboValue = cmbBoxKinds.getValue();
+        String textValue = chsdServices.getText();
+
+        return choiceValue != null && !choiceValue.isEmpty() &&
+                comboValue != null && !comboValue.isEmpty() &&
+                textValue != null && !textValue.isEmpty();
+    }
+
     public void markResolved(ActionEvent actionEvent) {
-        resolveButton.setDisable(true);
-        dbManager.resolveEmergency(rowData.getId());
-        reportButton.setDisable(false);
-        showAlert();
+        if (areFieldsFilled()) {
+            resolveButton.setDisable(true);
+            dbManager.resolveEmergency(rowData.getId());
+            reportButton.setDisable(false);
+            dbManager.makeDicision(chceBoxChar.getValue(), cmbBoxKinds.getValue(), chsdServices.getText(), rowData.getId());
+            chsdServices.setDisable(true);
+            cmbBoxKinds.setDisable(true);
+            listChsServices.setDisable(true);
+            showAlert();
+        } else {
+            showWarning();
+        }
+
+    }
+
+    private void showWarning() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle("Не заполнены поля!");
+        alert.setHeaderText(null);
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        alert.setContentText("Заполните характер, тип ЧС и выберите службы," +
+                "\nкоторые нужно направить.");
+        alert.showAndWait();
     }
 
     private void showAlert() {

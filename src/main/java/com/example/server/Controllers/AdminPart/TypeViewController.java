@@ -1,6 +1,6 @@
 package com.example.server.Controllers.AdminPart;
 
-public class KindViewController {
+public class TypeViewController {
     public void initData() {
     }
 }

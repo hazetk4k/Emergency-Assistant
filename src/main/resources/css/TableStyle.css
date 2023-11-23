@@ -1,0 +1,13 @@
+.table-view .column-header .label{
+    -fx-font-weight: bold; /* Жирный шрифт для заголовков */
+    -fx-text-fill: #000000;
+}
+
+.table-cell {
+    -fx-alignment: CENTER;
+    -fx-padding: 5px;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #d7e3e0; /* Цвет фона для нечетных строк */
+}
