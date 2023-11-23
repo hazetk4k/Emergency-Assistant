@@ -62,8 +62,8 @@ public class NewReportCont implements Initializable {
 
     public void updateTableWithData(ObservableList<ReportInfo> newData) {
         Platform.runLater(() -> {
-            tableView.getItems().clear(); // Очистить
-            tableView.getItems().addAll(newData); // Добавить
+            tableView.getItems().clear();
+            tableView.getItems().addAll(newData);
         });
     }
 

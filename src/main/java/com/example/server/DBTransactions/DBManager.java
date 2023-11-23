@@ -49,31 +49,31 @@ public class DBManager {
         }
     }
 
-    public ChoiceRep getChoicesForReport(int reportId){
+    public ChoiceRep getChoicesForReport(int reportId) {
         ChoiceRep choiceRep = null;
-        try{
+        try {
             TypedQuery<DispChoiceEntity> query = entityManager.createQuery(
                             "SELECT d FROM DispChoiceEntity d WHERE d.reportsByRepotId.id = :reportId", DispChoiceEntity.class)
                     .setParameter("reportId", reportId);
             DispChoiceEntity dispChoiceEntity = query.getSingleResult();
-            choiceRep = new ChoiceRep(dispChoiceEntity.getNameChar(), dispChoiceEntity.getNameType(),dispChoiceEntity.getServices());
-        }catch (Exception e){
+            choiceRep = new ChoiceRep(dispChoiceEntity.getNameChar(), dispChoiceEntity.getNameType(), dispChoiceEntity.getServices());
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-        }finally {
+        } finally {
             entityManager.clear();
         }
         return choiceRep;
     }
 
-    public Long isThereChoice(int reportId){
+    public Long isThereChoice(int reportId) {
         Long count = null;
-        try{
+        try {
             String queryString = "SELECT COUNT(d) FROM DispChoiceEntity d WHERE d.reportsByRepotId.id = :reportId";
             count = entityManager.createQuery(queryString, Long.class)
                     .setParameter("reportId", reportId)
                     .getSingleResult();
-        }catch (Exception e){
-        }finally {
+        } catch (Exception e) {
+        } finally {
             entityManager.clear();
         }
         return count;
@@ -102,9 +102,9 @@ public class DBManager {
             entityManager.getTransaction().begin();
             entityManager.persist(newEntity);
             entityManager.getTransaction().commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-        }finally {
+        } finally {
             entityManager.clear();
         }
     }
@@ -189,7 +189,7 @@ public class DBManager {
         }
     }
 
-    public int isThereKind(String kind){
+    public int isThereKind(String kind) {
         String query = "SELECT COUNT(*) FROM KindEmEntity t WHERE t.kindName = :kindName";
         Query q = entityManager.createQuery(query);
         q.setParameter("kindName", kind);
@@ -342,5 +342,87 @@ public class DBManager {
             entityManager.clear();
         }
         return services;
+    }
+
+    public ObservableList<SystemUsersRep> getSystUsers() {
+        ObservableList<SystemUsersRep> usersReps = FXCollections.observableArrayList();
+        try {
+            String queryStr = "SELECT u FROM SystUserEntity u";
+            TypedQuery<SystUserEntity> query = entityManager.createQuery(queryStr, SystUserEntity.class);
+            List<SystUserEntity> users = query.getResultList();
+
+            for (SystUserEntity user : users) {
+                String status;
+                if (user.getStatusSyst() == 1) {
+                    status = "Администратор";
+                } else {
+                    status = "Диспетчер";
+                }
+                SystemUsersRep rep = new SystemUsersRep(user.getIdSyst(), user.getLoginSyst(), status);
+                usersReps.add(rep);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return usersReps;
+    }
+
+    public void addNewUser(String login, String password, byte status) {
+        try{
+            SystUserEntity systUserEntity = new SystUserEntity();
+            systUserEntity.setLoginSyst(login);
+            systUserEntity.setPassword(password);
+            systUserEntity.setStatusSyst(status);
+
+            entityManager.getTransaction().begin();
+            entityManager.persist(systUserEntity);
+            entityManager.getTransaction().commit();
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+    }
+
+    public void deleteSystUser(int userId) {
+        try{
+            entityManager.getTransaction().begin();
+            SystUserEntity user = entityManager.find(SystUserEntity.class, userId);
+
+            if (user != null) {
+                entityManager.remove(user);
+                entityManager.getTransaction().commit();
+                System.out.println("Пользователь успешно удален");
+            } else {
+                System.out.println("Пользователь с ID " + userId + " не найден");
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }finally {
+            entityManager.clear();
+        }
+    }
+
+    public void changeUserStatus(int userId, byte newStatus) {
+        try {
+            entityManager.getTransaction().begin();
+            SystUserEntity user = entityManager.find(SystUserEntity.class, userId);
+            if (user != null) {
+                user.setStatusSyst(newStatus);
+
+                entityManager.merge(user);
+                entityManager.getTransaction().commit();
+                System.out.println("Статус пользователя успешно изменен");
+            } else {
+                System.out.println("Пользователь с ID " + userId + " не найден");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            entityManager.getTransaction().rollback();
+        } finally {
+            entityManager.clear();
+        }
     }
 }

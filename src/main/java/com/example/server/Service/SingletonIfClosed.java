@@ -10,6 +10,8 @@ public class SingletonIfClosed {
     public static DBManager manager;
     private NewReportCont controller;
 
+    private String currentUser;
+
     Boolean ifClosed = true;
     public static SingletonIfClosed getInstance(){
         if (instance == null){
@@ -33,6 +35,14 @@ public class SingletonIfClosed {
         if (controller != null) {
             controller.updateTableWithData(newData);
         }
+    }
+
+    public String getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(String currentUser) {
+        this.currentUser = currentUser;
     }
 
     public Boolean getIfClosed() {

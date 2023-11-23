@@ -38,11 +38,13 @@ public class AuthCont implements Initializable {
             fieldPassword.setStyle("-fx-prompt-text-fill: red");
             fieldPassword.setPromptText("Неверный пароль");
         } else if (answer.contains("админ")) {
+            SingletonIfClosed.getInstance().setCurrentUser(login);
             cont.openFxmlScene("/admin_menu.fxml", "Управление информацией по чс");
             SingletonIfClosed.getInstance().setIfClosed(true);
             Stage stage = (Stage) Button.getScene().getWindow();
             stage.close();
         } else if (answer.contains("диспетчер")) {
+            SingletonIfClosed.getInstance().setCurrentUser(login);
             cont.openFxmlScene("/new_report_menu.fxml", "Отслеживание новых заявлений");
             SingletonIfClosed.getInstance().setIfClosed(true);
             Stage stage = (Stage) Button.getScene().getWindow();

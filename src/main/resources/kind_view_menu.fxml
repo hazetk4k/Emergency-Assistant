@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox fx:controller="com.example.server.Controllers.AdminPart.KindViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="925.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="925.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.server.Controllers.AdminPart.KindViewController">
    <children>
-      <TableView stylesheets="/css/TableStyle.css" prefHeight="474.0" prefWidth="306.0" HBox.hgrow="ALWAYS">
+      <TableView fx:id="tableKind" prefHeight="474.0" prefWidth="306.0" stylesheets="/css/TableStyle.css" HBox.hgrow="ALWAYS">
         <columns>
           <TableColumn prefWidth="56.79998701810837" text="ID вида" />
           <TableColumn prefWidth="137.60002899169922" text="Вид ЧС" />
@@ -24,9 +24,9 @@
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <VBox alignment="TOP_CENTER" prefHeight="474.0" prefWidth="275.0" HBox.hgrow="ALWAYS">
+      <VBox alignment="TOP_CENTER" prefHeight="474.0" prefWidth="275.0" style="-fx-background-color: #aed2ca;" HBox.hgrow="ALWAYS">
          <children>
-            <Label maxWidth="1.7976931348623157E308" prefHeight="46.0" prefWidth="291.0" text="Добавление связи службы реагирования и вида" wrapText="true" VBox.vgrow="ALWAYS">
+            <Label maxWidth="1.7976931348623157E308" prefHeight="54.0" prefWidth="291.0" style="-fx-background-color: #1e2f56;" text="Добавление связи службы реагирования и вида" textFill="WHITE" wrapText="true" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -34,10 +34,10 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <font>
-                  <Font name="Arial" size="14.0" />
+                  <Font name="Arial Bold" size="16.0" />
                </font>
             </Label>
-            <Label maxWidth="1.7976931348623157E308" text="Выберите службу" VBox.vgrow="ALWAYS">
+            <Label maxWidth="1.7976931348623157E308" text="Выберите службу" textFill="#1e2f56" VBox.vgrow="ALWAYS">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
@@ -45,95 +45,90 @@
                   <Insets />
                </VBox.margin>
                <font>
-                  <Font name="Arial" size="12.0" />
+                  <Font name="Arial Bold" size="14.0" />
                </font>
             </Label>
-            <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0">
+            <ChoiceBox fx:id="serviceChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0">
                <VBox.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </VBox.margin>
             </ChoiceBox>
-            <Label maxWidth="1.7976931348623157E308" text="Выберите вид ЧС">
+            <Label maxWidth="1.7976931348623157E308" text="Выберите вид ЧС" textFill="#1e2f56">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <font>
-                  <Font name="Arial" size="12.0" />
+                  <Font name="Arial Bold" size="14.0" />
                </font>
             </Label>
-            <ChoiceBox maxWidth="1.7976931348623157E308" prefWidth="150.0">
+            <ChoiceBox fx:id="kindChoiceBox" maxWidth="1.7976931348623157E308" prefWidth="150.0">
                <VBox.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </VBox.margin>
             </ChoiceBox>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="39.0" prefWidth="229.0" text="Добавить связь" VBox.vgrow="ALWAYS">
+            <Button fx:id="addRelation" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="39.0" prefWidth="229.0" style="-fx-background-color: white;" text="Добавить связь" textFill="#1e2f56" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
                <font>
-                  <Font name="Arial" size="14.0" />
+                  <Font name="Arial Bold" size="14.0" />
                </font>
             </Button>
-            <Separator prefHeight="6.0" prefWidth="291.0" />
-            <Label maxWidth="1.7976931348623157E308" text="Добавление нового вида ЧС">
+            <Separator prefHeight="21.0" prefWidth="291.0" />
+            <Label maxWidth="1.7976931348623157E308" style="-fx-background-color: #1e2f56;" text="Добавление нового вида ЧС" textFill="WHITE">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField maxWidth="1.7976931348623157E308" promptText="Введите название нового вида ЧС">
+            <TextField fx:id="newKindFiled" maxWidth="1.7976931348623157E308" promptText="Введите название нового вида ЧС" style="-fx-background-color: white;">
                <VBox.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </VBox.margin>
             </TextField>
-            <Label maxWidth="1.7976931348623157E308" text="Выберите характер ЧС">
+            <Label maxWidth="1.7976931348623157E308" text="Выберите характер ЧС" textFill="#1e2f56">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <font>
-                  <Font name="Arial" size="12.0" />
+                  <Font name="Arial Bold" size="14.0" />
                </font>
             </Label>
-            <ChoiceBox maxWidth="1.7976931348623157E308">
+            <ChoiceBox fx:id="charChoiceBox" maxWidth="1.7976931348623157E308">
                <VBox.margin>
                   <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                </VBox.margin>
             </ChoiceBox>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="38.0" prefWidth="225.0" text="Добавить новый вид">
+            <Button fx:id="addNewKind" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="38.0" prefWidth="225.0" style="-fx-background-color: white;" text="Добавить новый вид" textFill="#1e2f56">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Separator prefHeight="15.0" prefWidth="291.0" />
-            <Label maxWidth="1.7976931348623157E308" text="Удаление выбранного вида ЧС">
+            <Separator prefHeight="25.0" prefWidth="291.0" />
+            <Label maxWidth="1.7976931348623157E308" style="-fx-background-color: #1e2f56;" text="Удаление выбранного вида ЧС" textFill="WHITE">
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <TextField promptText="Выберите вид ЧС для удаления">
-               <VBox.margin>
-                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
-               </VBox.margin>
-            </TextField>
-            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" text="Удалить вид">
+            <Button fx:id="deleteKind" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="26.0" prefWidth="236.0" style="-fx-background-color: white;" text="Удалить вид" textFill="#1e2f56">
                <VBox.margin>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </VBox.margin>
                <font>
-                  <Font size="14.0" />
+                  <Font name="System Bold" size="14.0" />
                </font>
             </Button>
          </children>
       </VBox>
-      <TableView stylesheets="/css/TableStyle.css" prefHeight="552.0" prefWidth="295.0" HBox.hgrow="ALWAYS">
+      <TableView fx:id="tableRelation" prefHeight="552.0" prefWidth="295.0" stylesheets="/css/TableStyle.css" HBox.hgrow="ALWAYS">
         <columns>
           <TableColumn prefWidth="66.40002745389938" text="ID" />
           <TableColumn prefWidth="191.99987030029297" text="Служба реагирования" />
