@@ -386,6 +386,36 @@ public class DBManager {
         }
     }
 
+    public boolean isTypeNameExists(String name) {
+        try {
+            TypedQuery<Long> query = entityManager.createQuery(
+                    "SELECT COUNT(t) FROM TypeEmEntity t WHERE t.name = :name", Long.class);
+            query.setParameter("name", name);
+
+            Long count = query.getSingleResult();
+            return count != null && count > 0;
+        } catch (Exception e) {
+            System.out.println("Ошибка при проверке имени типа: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void addNewType(String text, String text1, Integer id) {
+        try {
+            TypeEmEntity newType = new TypeEmEntity();
+            newType.setName(text);
+            newType.setRecommendations(text1);
+            newType.setIdKind(id);
+            entityManager.getTransaction().begin();
+            entityManager.merge(newType);
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+    }
+
     public void deleteSystUser(int userId) {
         try {
             entityManager.getTransaction().begin();
@@ -429,20 +459,75 @@ public class DBManager {
     public ObservableList<FullTypeRep> getFullTypes() {
         ObservableList<FullTypeRep> fullTypes = FXCollections.observableArrayList();
         try {
-            entityManager.getTransaction().begin();
             List<TypeEmEntity> types = entityManager.createQuery("SELECT t FROM TypeEmEntity t", TypeEmEntity.class).getResultList();
             for (TypeEmEntity type : types) {
                 FullTypeRep fullType = new FullTypeRep(type.getName(), type.getRecommendations(), type.getKindEmByIdKind().getKindName());
                 fullTypes.add(fullType);
             }
-            System.out.println("norm");
-            entityManager.getTransaction().commit();
         } catch (Exception e) {
-            System.out.println("cringe");
             System.out.println(e.getMessage());
         } finally {
             entityManager.clear();
         }
         return fullTypes;
+    }
+
+    public TimingRep getTimings(int idReport) {
+        TimingRep timingRep = null;
+        try {
+            String queryStr = "SELECT n.recievedDateTime, n.endUpDateTime FROM ReportsEntity n WHERE n.idReport = :idReport";
+            TypedQuery<Object[]> query = entityManager.createQuery(queryStr, Object[].class);
+            query.setParameter("idReport", idReport);
+
+            Object[] result = query.getSingleResult();
+            if (result != null && result.length == 2) {
+                Timestamp recievedDateTime = (Timestamp) result[0];
+                Timestamp endUpDateTime = (Timestamp) result[1];
+                timingRep = new TimingRep(recievedDateTime, endUpDateTime);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return timingRep;
+    }
+
+    public Integer getKindIdByName(String name) {
+        int id = 0;
+        try {
+            TypedQuery<Integer> query = entityManager.createQuery("SELECT k.id FROM KindEmEntity k WHERE k.kindName = :name", Integer.class);
+            query.setParameter("name", name);
+            List<Integer> results = query.getResultList();
+
+            if (!results.isEmpty()) {
+                id = results.get(0);
+                System.out.println(id);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return id;
+    }
+
+    public void deleteThisType(String text) {
+        try {
+            TypedQuery<TypeEmEntity> query = entityManager.createQuery(
+                    "SELECT t FROM TypeEmEntity t WHERE t.name = :name", TypeEmEntity.class);
+            query.setParameter("name", text);
+
+            TypeEmEntity typeEntity = query.getSingleResult();
+
+            entityManager.getTransaction().begin();
+            entityManager.remove(typeEntity);
+            entityManager.getTransaction().commit();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
     }
 }

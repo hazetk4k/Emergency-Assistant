@@ -51,7 +51,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
             </ChoiceBox>
-            <TextArea prefHeight="146.0" prefWidth="289.0" promptText="В данном поле необходимо ввести рекомендации пользователю">
+            <TextArea fx:id="recoms" prefHeight="146.0" prefWidth="289.0" promptText="В данном поле необходимо ввести рекомендации пользователю">
                <VBox.margin>
                   <Insets left="5.0" right="5.0" />
                </VBox.margin>
@@ -64,7 +64,7 @@
                   <Font size="14.0" />
                </font>
             </TextField>
-            <Button fx:id="btnAddNewTypr" mnemonicParsing="false" prefHeight="26.0" prefWidth="245.0" style="-fx-background-color: white;" text="Добавить новый тип" textFill="#1e2f56">
+            <Button fx:id="btnAddNewTypr" mnemonicParsing="false" onAction="#addNewType" prefHeight="26.0" prefWidth="245.0" style="-fx-background-color: white;" text="Добавить новый тип" textFill="#1e2f56">
                <VBox.margin>
                   <Insets bottom="10.0" top="10.0" />
                </VBox.margin>
@@ -84,7 +84,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
             </Label>
-            <TextField fx:id="choosedType" promptText="Выбранный тип" style="-fx-background-color: white;">
+            <TextField fx:id="choosedType" editable="false" promptText="Выбранный тип" style="-fx-background-color: white;">
                <VBox.margin>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </VBox.margin>
@@ -92,7 +92,7 @@
                   <Font size="14.0" />
                </font>
             </TextField>
-            <Button fx:id="btnDeleteType" mnemonicParsing="false" prefHeight="26.0" prefWidth="245.0" style="-fx-background-color: white;" text="Удалить тип" textFill="#1e2f56">
+            <Button fx:id="btnDeleteType" mnemonicParsing="false" onAction="#deleteType" prefHeight="26.0" prefWidth="245.0" style="-fx-background-color: white;" text="Удалить тип" textFill="#1e2f56">
                <font>
                   <Font name="Arial Bold" size="14.0" />
                </font>

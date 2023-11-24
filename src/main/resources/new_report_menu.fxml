@@ -25,7 +25,7 @@
     </TableView>
 
     <VBox fx:id="burgerMenu" alignment="CENTER" layoutY="30" prefHeight="390.0" prefWidth="230.0" spacing="10" style="-fx-background-color: lightgray;" stylesheets="/css/ReportsStylesheet.css" visible="false">
-        <Button fx:id="button1" maxWidth="Infinity" mnemonicParsing="false" onAction="#toReportsList" text="К списку заявлений 📋" />
+        <Button fx:id="button1" maxWidth="Infinity" visible="false" mnemonicParsing="false" onAction="#toReportsList" text="К списку заявлений 📋" />
         <Button fx:id="button2" maxWidth="Infinity" mnemonicParsing="false" onAction="#openSaveDirectory" text="К отчетам 📃" />
         <VBox VBox.vgrow="ALWAYS" />
         <Button fx:id="button3" maxWidth="Infinity" mnemonicParsing="false" onAction="#toAuthWindow" text="Выйти 🚪" />

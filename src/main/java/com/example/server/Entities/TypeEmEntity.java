@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 public class TypeEmEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
+    @Column(name = "id_type")
+    private int idType;
+    @Basic
     @Column(name = "name")
     private String name;
     @Basic
@@ -72,5 +75,13 @@ public class TypeEmEntity {
 
     public void setKindEmByIdKind(KindEmEntity kindEmByIdKind) {
         this.kindEmByIdKind = kindEmByIdKind;
+    }
+
+    public int getIdType() {
+        return idType;
+    }
+
+    public void setIdType(int idType) {
+        this.idType = idType;
     }
 }

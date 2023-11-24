@@ -1,9 +1,7 @@
 package com.example.server.Controllers.DispatcherPart;
 
-import com.example.server.DBTransactions.ChoiceRep;
-import com.example.server.DBTransactions.DBManager;
-import com.example.server.DBTransactions.FullReportRep;
-import com.example.server.DBTransactions.ReportInfo;
+import com.example.server.DBTransactions.*;
+import com.example.server.Service.ReportGenerator;
 import com.example.server.Service.SingletonIfClosed;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -12,7 +10,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class OtherReportController {
     @FXML
@@ -141,7 +141,10 @@ public class OtherReportController {
     }
 
     public void generateReport(ActionEvent actionEvent) {
-
+        ReportGenerator reportGenerator = new ReportGenerator();
+        Map<String, String> reportData = gatherReportData();
+        String filePath = "D:\\University\\CourseProject\\Server\\src\\main\\resources\\reports\\Report" + String.valueOf(rowData.getId()) + ".pdf";
+        reportGenerator.generateReport(reportData, filePath);
     }
 
     private boolean areFieldsFilled() {
@@ -191,5 +194,31 @@ public class OtherReportController {
 
     public void cleanUpServices(ActionEvent actionEvent) {
         listChsServices.getSelectionModel().clearSelection();
+    }
+
+    private Map<String, String> gatherReportData() {
+
+        TimingRep timings = dbManager.getTimings(rowData.getId());
+
+        Map<String, String> data = new HashMap<>();
+        data.put("Num", String.valueOf(rowData.getId()));
+        data.put("Type", typeField.getText());
+        data.put("ChoiceBoxChar", chceBoxChar.getValue());
+        data.put("cmbBoxKinds", cmbBoxKinds.getValue());
+        data.put("place", place.getText() );
+        data.put("services", chsdServices.getText());
+        data.put("recieved_date_time", timings.getRecieved_date_time().toString());
+        data.put("fio", fio.getText());
+        data.put("email", email.getText());
+        data.put("address", homeAddress.getText());
+        data.put("recommendations", recommendationsTextArea.getText());
+        data.put("areThereCasualities", areThereAnyCasualties.getText());
+        data.put("amountOfCasualities", amountOfCasualities.getText());
+        data.put("isUserInDanger", isUserInDanger.getText());
+        data.put("additionalData", additionalData.getText());
+        data.put("логин", SingletonIfClosed.getInstance().getCurrentUser());
+        data.put("end_up_datetime", timings.getEnd_up_datetime().toString());
+        return data;
+
     }
 }
