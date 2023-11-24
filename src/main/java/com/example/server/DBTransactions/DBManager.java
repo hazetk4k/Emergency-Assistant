@@ -370,7 +370,7 @@ public class DBManager {
     }
 
     public void addNewUser(String login, String password, byte status) {
-        try{
+        try {
             SystUserEntity systUserEntity = new SystUserEntity();
             systUserEntity.setLoginSyst(login);
             systUserEntity.setPassword(password);
@@ -379,7 +379,7 @@ public class DBManager {
             entityManager.getTransaction().begin();
             entityManager.persist(systUserEntity);
             entityManager.getTransaction().commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
             entityManager.clear();
@@ -387,7 +387,7 @@ public class DBManager {
     }
 
     public void deleteSystUser(int userId) {
-        try{
+        try {
             entityManager.getTransaction().begin();
             SystUserEntity user = entityManager.find(SystUserEntity.class, userId);
 
@@ -398,9 +398,9 @@ public class DBManager {
             } else {
                 System.out.println("Пользователь с ID " + userId + " не найден");
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-        }finally {
+        } finally {
             entityManager.clear();
         }
     }
@@ -424,5 +424,25 @@ public class DBManager {
         } finally {
             entityManager.clear();
         }
+    }
+
+    public ObservableList<FullTypeRep> getFullTypes() {
+        ObservableList<FullTypeRep> fullTypes = FXCollections.observableArrayList();
+        try {
+            entityManager.getTransaction().begin();
+            List<TypeEmEntity> types = entityManager.createQuery("SELECT t FROM TypeEmEntity t", TypeEmEntity.class).getResultList();
+            for (TypeEmEntity type : types) {
+                FullTypeRep fullType = new FullTypeRep(type.getName(), type.getRecommendations(), type.getKindEmByIdKind().getKindName());
+                fullTypes.add(fullType);
+            }
+            System.out.println("norm");
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("cringe");
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return fullTypes;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.server.DBTransactions;
 
 public class TypesRep {
+
     public String name;
     public String recommendations;
 
