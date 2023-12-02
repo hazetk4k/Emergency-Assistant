@@ -20,7 +20,7 @@ public class KindEmEntity {
     @ManyToOne
     @JoinColumn(name = "id_char", referencedColumnName = "char_id", insertable = false, updatable = false)
     private CharEmEntity charEmByIdChar;
-    @OneToMany(mappedBy = "kindEmByKindId")
+    @OneToMany(mappedBy = "kindEmByKindId", cascade = CascadeType.REMOVE)
     private Collection<ServiceKindRelationEntity> serviceKindRelationsByKindId;
     @OneToMany(mappedBy = "kindEmByIdKind")
     private Collection<TypeEmEntity> typeEmsByKindId;

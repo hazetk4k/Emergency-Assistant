@@ -530,4 +530,92 @@ public class DBManager {
             entityManager.clear();
         }
     }
+
+    public ObservableList<FulliKindRep> getFullKinds() {
+        ObservableList<FulliKindRep> fullKinds = FXCollections.observableArrayList();
+        try {
+            List<KindEmEntity> kinds = entityManager.createQuery("SELECT t FROM KindEmEntity t", KindEmEntity.class).getResultList();
+            for (KindEmEntity kind : kinds) {
+                FulliKindRep fullKind = new FulliKindRep(kind.getKindId(), kind.getKindName(), kind.getCharEmByIdChar().getCharName());
+                fullKinds.add(fullKind);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return fullKinds;
+    }
+
+    public void deleteThisKind(String text) {
+        try {
+            TypedQuery<KindEmEntity> query = entityManager.createQuery(
+                    "SELECT t FROM KindEmEntity t WHERE t.kindName = :name", KindEmEntity.class);
+            query.setParameter("name", text);
+            KindEmEntity kindEntity = query.getSingleResult();
+
+            entityManager.getTransaction().begin();
+            entityManager.remove(kindEntity);
+            entityManager.getTransaction().commit();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+    }
+
+    public void addNewKind(String text, int id) {
+        try {
+            KindEmEntity kind = new KindEmEntity();
+            kind.setKindName(text);
+            kind.setIdChar(id);
+
+            entityManager.getTransaction().begin();
+            entityManager.merge(kind);
+            entityManager.getTransaction().commit();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+    }
+
+    public int getCharIdByName(String selectedItem) {
+        int id = 0;
+        try {
+            TypedQuery<Integer> query = entityManager.createQuery("SELECT k.id FROM CharEmEntity k WHERE k.charName = :name", Integer.class);
+            query.setParameter("name", selectedItem);
+            List<Integer> results = query.getResultList();
+
+            if (!results.isEmpty()) {
+                id = results.get(0);
+                System.out.println(id);
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return id;
+    }
+
+    public boolean ifThereTypesOfKind(String text) {
+        boolean bool = false;
+        try {
+            String queryStr = "SELECT COUNT(k) FROM KindEmEntity k WHERE k.kindName = :kindName";
+            TypedQuery<Long> query = entityManager.createQuery(queryStr, Long.class);
+            query.setParameter("kindName", text);
+            long count = query.getSingleResult();
+            if (count > 0) {
+                bool = true;
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return bool;
+    }
 }
