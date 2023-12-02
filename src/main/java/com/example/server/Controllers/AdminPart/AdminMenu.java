@@ -2,6 +2,7 @@ package com.example.server.Controllers.AdminPart;
 
 import com.example.server.Controllers.BaseCont;
 import com.example.server.Service.SingletonIfClosed;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -20,6 +21,7 @@ public class AdminMenu implements Initializable {
     public Button btnOpenTypes;
     public Button btnOpenUsers;
     public Button btnBackToAuth;
+    public Button btnOpenRels;
     BaseCont cont = new BaseCont();
 
     @Override
@@ -27,11 +29,12 @@ public class AdminMenu implements Initializable {
 
     }
 
-    public void backToAuth() throws IOException{
+    public void backToAuth() throws IOException {
         cont.openFxmlScene("/auth.fxml", "Авторизация");
         SingletonIfClosed.getInstance().setIfClosed(true);
         Stage stage = (Stage) btnBackToAuth.getScene().getWindow();
-        stage.close(); String resource = "/auth.fxml";
+        stage.close();
+        String resource = "/auth.fxml";
     }
 
     public void openUserOptions() {
@@ -85,4 +88,20 @@ public class AdminMenu implements Initializable {
         }
     }
 
+    public void openRelationsOptions() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/relations_view_menu.fxml"));
+            Parent root = loader.load();
+
+            RelationsViewController controller = loader.getController();
+            controller.initData();
+
+            Stage stage = new Stage();
+            stage.setTitle("Управление связями между видом ЧС и службами реагирования");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }

@@ -3,6 +3,7 @@ package com.example.server.DBTransactions;
 import com.example.server.Entities.*;
 import com.example.server.Service.SingletonIfClosed;
 import jakarta.persistence.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -604,16 +605,77 @@ public class DBManager {
     public boolean ifThereTypesOfKind(String text) {
         boolean bool = false;
         try {
-            String queryStr = "SELECT COUNT(k) FROM KindEmEntity k WHERE k.kindName = :kindName";
+            String queryStr = "SELECT COUNT(k) FROM TypeEmEntity k WHERE k.name = :kindName";
             TypedQuery<Long> query = entityManager.createQuery(queryStr, Long.class);
             query.setParameter("kindName", text);
             long count = query.getSingleResult();
+
             if (count > 0) {
                 bool = true;
+            }
+
+            System.out.println("Записи есть: " + bool + " (сколько: " + count + ")");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+        return bool;
+    }
+
+    public void addKindServiceRelation(Integer id_kind, Integer id_service) {
+        try {
+            ServiceKindRelationEntity relation = new ServiceKindRelationEntity();
+            relation.setKindId(id_kind);
+            relation.setServiceId(id_service);
+
+            entityManager.getTransaction().begin();
+            entityManager.merge(relation);
+            entityManager.getTransaction().commit();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+    }
+
+    public Integer getServiceIdByName(String service) {
+        int id = 0;
+        try {
+            TypedQuery<Integer> query = entityManager.createQuery("SELECT k.id FROM ServiceEntity k WHERE k.serviceName = :name", Integer.class);
+            query.setParameter("name", service);
+            List<Integer> results = query.getResultList();
+
+            if (!results.isEmpty()) {
+                id = results.get(0);
+                System.out.println(id);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
+            entityManager.clear();
+        }
+        return id;
+    }
+
+    public boolean ifThereSuchRelation(Integer kind_id, Integer service_id) {
+        boolean bool = false;
+        try{
+            String queryStr = "SELECT COUNT(k) FROM ServiceKindRelationEntity k WHERE k.kindId =:kind_id and k.serviceId =:service_id";
+            TypedQuery<Long> query = entityManager.createQuery(queryStr, Long.class);
+            query.setParameter("kind_id", kind_id);
+            query.setParameter("service_id", service_id);
+            long count = query.getSingleResult();
+
+            if (count > 0) {
+                bool = true;
+            }
+
+            System.out.println("Записи есть: " + bool + " (сколько: " + count + ")");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }finally {
             entityManager.clear();
         }
         return bool;

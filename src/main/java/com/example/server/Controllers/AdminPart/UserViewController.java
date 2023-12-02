@@ -71,7 +71,7 @@ public class UserViewController {
     public void deleteUser(ActionEvent actionEvent) {
         if (choosedProfile.getText() != null && !Objects.equals(choosedProfile.getText(), "")) {
             if (Objects.equals(SingletonIfClosed.getInstance().getCurrentUser(), choosedProfile.getText())) {
-                showAlert("Попытка удаления активного профиля!", "Остановлена попытка собственного профиля!");
+                showAlert("Попытка удаления активного профиля!", "Остановлена попытка удаления собственного профиля!");
             } else {
                 if (systUserTable.getSelectionModel().isEmpty()) {
                     showAlert("Не выбран элемент таблицы!", "Выберите поле таблицы, которое хотите удалить.");
@@ -100,12 +100,16 @@ public class UserViewController {
             if (systUserTable.getSelectionModel().isEmpty()) {
                 showAlert("Не выбран элемент таблицы!", "Выберите поле, в котором хотите изменить статус");
             } else {
-                byte n = 0;
-                if (Objects.equals(choiceBoxStatus.getSelectionModel().getSelectedItem(), "Администратор")) {
-                    n = 1;
+                if (Objects.equals(SingletonIfClosed.getInstance().getCurrentUser(), choosedProfile.getText())) {
+                    showAlert("Попытка изменения активного профиля!", "Остановлена попытка изменения статуса собственного профиля!");
+                } else {
+                    byte n = 0;
+                    if (Objects.equals(choiceBoxStatus.getSelectionModel().getSelectedItem(), "Администратор")) {
+                        n = 1;
+                    }
+                    dbManager.changeUserStatus(userId, n);
+                    initData();
                 }
-                dbManager.changeUserStatus(userId, n);
-                initData();
             }
         }
     }

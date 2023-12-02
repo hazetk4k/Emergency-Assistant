@@ -1,7 +1,6 @@
 package com.example.server.Controllers.AdminPart;
 
 import com.example.server.DBTransactions.DBManager;
-import com.example.server.DBTransactions.FullTypeRep;
 import com.example.server.DBTransactions.FulliKindRep;
 import com.example.server.Service.SingletonIfClosed;
 import javafx.collections.ObservableList;
