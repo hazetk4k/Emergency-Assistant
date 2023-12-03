@@ -503,7 +503,6 @@ public class DBManager {
 
             if (!results.isEmpty()) {
                 id = results.get(0);
-                System.out.println(id);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -592,7 +591,6 @@ public class DBManager {
 
             if (!results.isEmpty()) {
                 id = results.get(0);
-                System.out.println(id);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -613,8 +611,6 @@ public class DBManager {
             if (count > 0) {
                 bool = true;
             }
-
-            System.out.println("Записи есть: " + bool + " (сколько: " + count + ")");
         } catch (Exception e) {
             System.out.println(e.getMessage());
         } finally {
@@ -649,7 +645,6 @@ public class DBManager {
 
             if (!results.isEmpty()) {
                 id = results.get(0);
-                System.out.println(id);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -661,7 +656,7 @@ public class DBManager {
 
     public boolean ifThereSuchRelation(Integer kind_id, Integer service_id) {
         boolean bool = false;
-        try{
+        try {
             String queryStr = "SELECT COUNT(k) FROM ServiceKindRelationEntity k WHERE k.kindId =:kind_id and k.serviceId =:service_id";
             TypedQuery<Long> query = entityManager.createQuery(queryStr, Long.class);
             query.setParameter("kind_id", kind_id);
@@ -671,13 +666,46 @@ public class DBManager {
             if (count > 0) {
                 bool = true;
             }
-
-            System.out.println("Записи есть: " + bool + " (сколько: " + count + ")");
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e.getMessage());
-        }finally {
+        } finally {
             entityManager.clear();
         }
         return bool;
+    }
+
+    public void deleteAllRels(Integer kind_id) {
+        List<ServiceKindRelationEntity> relations;
+        try {
+            entityManager.getTransaction().begin();
+            TypedQuery<ServiceKindRelationEntity> query = entityManager.createQuery("SELECT k FROM ServiceKindRelationEntity k WHERE k.kindId = :kindId", ServiceKindRelationEntity.class);
+            query.setParameter("kindId", kind_id);
+            relations = query.getResultList();
+            for (ServiceKindRelationEntity relation : relations) {
+                entityManager.remove(relation);
+            }
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+
+    }
+
+    public void deleteThatRel(Integer kindId, Integer serviceId) {
+        try {
+            entityManager.getTransaction().begin();
+            TypedQuery<ServiceKindRelationEntity> query = entityManager.createQuery("SELECT k FROM ServiceKindRelationEntity k WHERE k.kindId = :kindId and k.serviceId =:serviceId", ServiceKindRelationEntity.class);
+            query.setParameter("kindId", kindId);
+            query.setParameter("serviceId", serviceId);
+            entityManager.remove(query.getSingleResult());
+            entityManager.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            entityManager.clear();
+        }
+
     }
 }

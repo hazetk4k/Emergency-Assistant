@@ -2,12 +2,11 @@ package com.example.server.Controllers.AdminPart;
 
 import com.example.server.DBTransactions.DBManager;
 import com.example.server.Service.SingletonIfClosed;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.*;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RelationsViewController {
     public TreeView<String> relationsTreeView;
@@ -101,8 +100,26 @@ public class RelationsViewController {
     }
 
     public void deleteServiceRel(ActionEvent actionEvent) {
+        if (choosedService.getText() == null || Objects.equals(choosedService.getText(), "")) {
+            showAlert("Не выбрана служба!", "Выберите службу, связь с которой хотите убрать!");
+            return;
+        }
+
+        int kind_id = dbManager.getKindIdByName(textKindOfService.getText());
+        int service_id = dbManager.getServiceIdByName(choosedService.getText());
+        dbManager.deleteThatRel(kind_id, service_id);
+        initData();
     }
 
     public void deleteAllRels(ActionEvent actionEvent) {
+
+        if (choosedKind.getText() == null || Objects.equals(choosedKind.getText(), "")) {
+            showAlert("Не выбран вид ЧС!", "Выберите вид ЧС, чтобы удалить все ");
+            return;
+        }
+
+        int kind_id = dbManager.getKindIdByName(choosedKind.getText());
+        dbManager.deleteAllRels(kind_id);
+        initData();
     }
 }
