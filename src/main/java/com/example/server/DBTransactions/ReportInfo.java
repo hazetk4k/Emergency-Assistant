@@ -9,7 +9,7 @@ public class ReportInfo {
     DateTimeFormatExample format = new DateTimeFormatExample();
     private int id;
     private String type;
-    private Timestamp timestamp;
+    private String timestamp;
     private String place;
     private String fio;
     private Boolean wasSeen;
@@ -22,11 +22,11 @@ public class ReportInfo {
         this.type = type;
     }
 
-    public Timestamp getTimestamp() {
+    public String getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
+    public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -62,7 +62,7 @@ public class ReportInfo {
         this.id = id;
     }
 
-    public ReportInfo(int id, String type, Timestamp timestamp, String place, String fio, Boolean wasSeen) {
+    public ReportInfo(int id, String type, String timestamp, String place, String fio, Boolean wasSeen) {
         this.id = id;
         this.type = type;
         this.timestamp = timestamp;

@@ -1,6 +1,7 @@
 package com.example.server.DBTransactions;
 
 import com.example.server.Entities.*;
+import com.example.server.Service.DateTimeFormatExample;
 import com.example.server.Service.SingletonIfClosed;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -127,6 +128,7 @@ public class DBManager {
 
     public ObservableList<ReportInfo> getUserReportsInfo() {
         ObservableList<ReportInfo> reportsInfoList = FXCollections.observableArrayList();
+        DateTimeFormatExample format = new DateTimeFormatExample();
         try {
             String queryStr = "SELECT u FROM UserDataEntity u";
 
@@ -142,7 +144,7 @@ public class DBManager {
                     String place = report.getPlace();
                     Boolean wasSeen = report.getWasSeen();
 
-                    ReportInfo reportInfo = new ReportInfo(id, type, timestamp, place, fullName, wasSeen);
+                    ReportInfo reportInfo = new ReportInfo(id, type, format.dateTimeChange(timestamp.toString()), place, fullName, wasSeen);
                     reportsInfoList.add(reportInfo);
                 }
             }

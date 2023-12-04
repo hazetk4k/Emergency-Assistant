@@ -45,7 +45,7 @@ public class NewReportCont implements Initializable {
     @FXML
     public TableColumn<ReportInfo, String> place;
     @FXML
-    public TableColumn<ReportInfo, Timestamp> timestamp;
+    public TableColumn<ReportInfo, String> timestamp;
     BaseCont cont = new BaseCont();
     public javafx.scene.control.Button button1;
     public javafx.scene.control.Button button2;
@@ -77,7 +77,7 @@ public class NewReportCont implements Initializable {
         SingletonIfClosed.getInstance().setController(this);
         id.setCellValueFactory(new PropertyValueFactory<ReportInfo, Integer>("id"));
         type.setCellValueFactory(new PropertyValueFactory<ReportInfo, String>("type"));
-        timestamp.setCellValueFactory(new PropertyValueFactory<ReportInfo, Timestamp>("timestamp"));
+        timestamp.setCellValueFactory(new PropertyValueFactory<ReportInfo, String>("timestamp"));
         place.setCellValueFactory(new PropertyValueFactory<ReportInfo, String>("place"));
         fio.setCellValueFactory(new PropertyValueFactory<ReportInfo, String>("fio"));
         wasSeen.setCellValueFactory(new PropertyValueFactory<ReportInfo, Boolean>("wasSeen"));
