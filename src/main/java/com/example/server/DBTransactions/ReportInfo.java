@@ -1,8 +1,12 @@
 package com.example.server.DBTransactions;
 
+import com.example.server.Service.DateTimeFormatExample;
+
 import java.sql.Timestamp;
 
 public class ReportInfo {
+
+    DateTimeFormatExample format = new DateTimeFormatExample();
     private int id;
     private String type;
     private Timestamp timestamp;

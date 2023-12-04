@@ -1,8 +1,9 @@
 package com.example.server.Controllers.DispatcherPart;
 
 import com.example.server.DBTransactions.*;
-import com.example.server.Service.ReportGenerator;
+import com.example.server.Service.DateTimeFormatExample;
 import com.example.server.Service.SingletonIfClosed;
+import com.example.server.Service.WordReportGenerator;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -54,6 +55,7 @@ public class OtherReportController {
     @FXML
     public TextField place;
     DBManager dbManager = SingletonIfClosed.getInstance().getDBManager();
+    DateTimeFormatExample format = new DateTimeFormatExample();
     public ReportInfo rowData;
 
     public void initData(ReportInfo rowData) {
@@ -85,7 +87,6 @@ public class OtherReportController {
         FullReportRep fullRep = dbManager.getFullReport(rowData.getId());
 
 
-        // данные из fullRep
         if (fullRep.getUserInDanger()) {
             isUserInDanger.setText("Да");
         } else {
@@ -102,11 +103,10 @@ public class OtherReportController {
         homeAddress.setText(fullRep.getHome());
         email.setText(fullRep.getUserEmail());
 
-        // данные из rowData
         fio.setText(rowData.getFio());
         place.setText(rowData.getPlace());
         dateAndTime.setText(rowData.getTimestamp().toString());
-        recommendationsTextArea.setText("Cохраняйте спокойствие. Пострайтесь удалиться от\n" +
+        recommendationsTextArea.setText("Cохраняйте спокойствие. Постарайтесь удалиться от\n" +
                 "потенциальной опасности на безопасное расстояние\n" +
                 "и ожидайте приезда служб.");
 
@@ -141,10 +141,9 @@ public class OtherReportController {
     }
 
     public void generateReport(ActionEvent actionEvent) {
-        ReportGenerator reportGenerator = new ReportGenerator();
+        WordReportGenerator reportGenerator = new WordReportGenerator();
         Map<String, String> reportData = gatherReportData();
-        String filePath = "D:\\University\\CourseProject\\Server\\src\\main\\resources\\reports\\Report" + String.valueOf(rowData.getId()) + ".pdf";
-        reportGenerator.generateReport(reportData, filePath);
+        reportGenerator.generateReport(reportData);
     }
 
     private boolean areFieldsFilled() {
@@ -203,11 +202,11 @@ public class OtherReportController {
         Map<String, String> data = new HashMap<>();
         data.put("Num", String.valueOf(rowData.getId()));
         data.put("Type", typeField.getText());
-        data.put("ChoiceBoxChar", chceBoxChar.getValue());
-        data.put("cmbBoxKinds", cmbBoxKinds.getValue());
+        data.put("Char", chceBoxChar.getValue());
+        data.put("Kind", cmbBoxKinds.getValue());
         data.put("place", place.getText() );
         data.put("services", chsdServices.getText());
-        data.put("recieved_date_time", timings.getRecieved_date_time().toString());
+        data.put("recieved_date_time", format.dateTimeChange(timings.getRecieved_date_time().toString()));
         data.put("fio", fio.getText());
         data.put("email", email.getText());
         data.put("address", homeAddress.getText());
@@ -217,7 +216,8 @@ public class OtherReportController {
         data.put("isUserInDanger", isUserInDanger.getText());
         data.put("additionalData", additionalData.getText());
         data.put("логин", SingletonIfClosed.getInstance().getCurrentUser());
-        data.put("end_up_datetime", timings.getEnd_up_datetime().toString());
+        data.put("end_up_datetime", format.dateTimeChange(timings.getEnd_up_datetime().toString()));
+        data.put("timestamp", dateAndTime.getText());
         return data;
 
     }
