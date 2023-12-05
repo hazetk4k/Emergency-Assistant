@@ -30,31 +30,36 @@ public class WordReportGenerator {
         generateParagraph(document, "");
         generateBoldParagraph(document, "1. Определение характеристик чрезвычайной ситуации и незамедлительный вызов необходимых служб.");
 
-        generateParagraph(document, "Характер ситуации определен диспетчером как \"ЧС " + reportData.get("Char") + "\". ");
-        generateParagraph(document, "Вид чрезвычайной ситуации определен как \"" + reportData.get("Kind") + "\". ");
+        generateParagraph(document, "Характер ситуации определен диспетчером как «ЧС " + reportData.get("Char") + "». ");
+        generateParagraph(document, "Вид чрезвычайной ситуации определен как «" + reportData.get("Kind") + "». ");
         generateParagraph(document, "Указанный адрес, где произошла ЧС: " + reportData.get("place") + ". ");
         generateParagraph(document, "Указанные дата и время происшествия: " + reportData.get("timestamp") + ". ");
         generateParagraph(document, "");
-        generateParagraph(document, "Диспетчером были вызваны следующие службы: " + reportData.get("services").replace("[", "").replace("]", "") + ".");
+        if (Objects.equals(reportData.get("if[]"), "no")){
+            generateParagraph(document, "Диспетчером были вызваны следующие службы: " + reportData.get("services") + ".");
+        } else{
+            generateParagraph(document, "Диспетчером были вызваны следующие службы: " + reportData.get("services").replace("[", "").replace("]", "") + ".");
+        }
         generateParagraph(document, "");
         generateBoldParagraph(document, "2. Получение персональных данных заявителя и предоставление соответствующих рекомендаций.");
 
         generateParagraph(document, "Данные заявителя:");
         generateParagraph(document, "ФИО заявителя: " + reportData.get("fio"));
         generateParagraph(document, "Место жительства: " + reportData.get("address") + ". ");
-        generateParagraph(document, "Електронная почта: " + reportData.get("email") + ". ");
+        generateParagraph(document, "Электронная почта: " + reportData.get("email") + ". ");
         generateParagraph(document, "");
-        generateParagraph(document, "Диспетчером выдана следующая рекомендация для заявителя: " + reportData.get("recommendations"));
+        generateParagraph(document, "Диспетчером выдана следующая рекомендация для заявителя: ");
+        generateParagraph(document, reportData.get("recommendations"));
         generateParagraph(document, "");
         generateBoldParagraph(document, "3. Предоставление информации службам, направленным на ликвидацию чрезвычайной ситуации, посредством радиосвязи.");
 
-        generateParagraph(document, "Пострдавшие: " + reportData.get("areThereCasualities") + ". ");
+        generateParagraph(document, "Пострадавшие: " + reportData.get("areThereCasualities") + ". ");
         if (!Objects.equals(reportData.get("areThereCasualities"), "Отсутствуют")) {
             generateParagraph(document, "Указанное количество пострадавших: " + reportData.get("amountOfCasualities"));
         }
         generateParagraph(document, "Также переданы дополнительные сведения от заявителя: " + reportData.get("additionalData"));
         generateParagraph(document, "");
-        generateParagraph(document, "Отчет составлен диспетчером, владеющим учетной записью системы под логином \"" + reportData.get("логин") + "\".");
+        generateParagraph(document, "Отчет составлен диспетчером, владеющим учетной записью системы под логином «" + reportData.get("логин") + "».");
         saveDocument(document, reportData.get("Num"));
     }
 
