@@ -24,8 +24,14 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
@@ -152,7 +158,25 @@ public class NewReportCont implements Initializable {
     }
 
     public void openSaveDirectory(ActionEvent actionEvent) {
+        String directoryPath = "D:\\University\\CourseProject\\Server\\src\\main\\resources\\reports";
+
+        try {
+            File directory = new File(directoryPath);
+            if (!Desktop.isDesktopSupported()) {
+                System.out.println("Открытие папки не поддерживается.");
+                return;
+            }
+            Desktop desktop = Desktop.getDesktop();
+            if (directory.exists()) {
+                desktop.open(directory); // Открыть директорию
+            } else {
+                System.out.println("Указанная директория не существует.");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
 
     public void toAuthWindow() throws IOException {
         cont.openFxmlScene("/auth.fxml", "Авторизация");

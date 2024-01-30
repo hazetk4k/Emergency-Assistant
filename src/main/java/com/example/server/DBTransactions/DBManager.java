@@ -136,7 +136,13 @@ public class DBManager {
             List<UserDataEntity> users = query.getResultList();
 
             for (UserDataEntity user : users) {
-                String fullName = user.getSurname() + " " + user.getName().charAt(0) + ". " + user.getPatronymic().charAt(0) + ".";
+                String fullName = "";
+                if(user.getPatronymic() == null || Objects.equals(user.getPatronymic(), "")){
+                    fullName = user.getSurname() + " " + user.getName().charAt(0) + ". ";
+                } else{
+                    fullName = user.getSurname() + " " + user.getName().charAt(0) + ". " + user.getName().charAt(0);
+                }
+
                 for (ReportsEntity report : user.getReportsByEmail()) {
                     int id = report.getIdReport();
                     String type = report.getType();

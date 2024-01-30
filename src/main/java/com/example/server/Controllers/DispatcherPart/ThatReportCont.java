@@ -133,9 +133,13 @@ public class ThatReportCont {
 
     public void generateReport(ActionEvent actionEvent) {
         WordReportGenerator reportGenerator = new WordReportGenerator();
-        DocxToPdfConverter pdfConverter = new DocxToPdfConverter();
         Map<String, String> reportData = gatherReportData();
         reportGenerator.generateReport(reportData);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Выполнено");
+        alert.setHeaderText(null);
+        alert.setContentText("Создан отчет по заявлению №" + rowData.getId());
+        alert.showAndWait();
     }
 
     private Map<String, String> gatherReportData() {

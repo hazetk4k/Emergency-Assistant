@@ -144,6 +144,11 @@ public class OtherReportController {
         WordReportGenerator reportGenerator = new WordReportGenerator();
         Map<String, String> reportData = gatherReportData();
         reportGenerator.generateReport(reportData);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Выполнено");
+        alert.setHeaderText(null);
+        alert.setContentText("Создан отчет по заявлению №" + rowData.getId());
+        alert.showAndWait();
     }
 
     private boolean areFieldsFilled() {
